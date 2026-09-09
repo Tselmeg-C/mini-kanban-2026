@@ -1,0 +1,227 @@
+openapi: 3.0.3
+info:
+  title: TidyBoard API
+  version: 0.1.0
+  description: |
+    Storage-independent contract for TidyBoard. All resources belong to the
+    authenticated session. Clients poll visible resources about every three
+    seconds and should observe confirmed changes within about five seconds.
+    Refresh never replaces an unsaved client draft.
+servers:
+  - url: http://localhost:8000
+tags:
+  - name: authentication
+  - name: boards
+  - name: tasks
+  - name: search
+paths:
+  /auth/google/login:
+    get:
+      tags: [authentication]
+      summary: Start Google sign-in
+      security: []
+      responses:
+        '302': {description: Redirect to Google authorization.}
+  /auth/google/callback:
+    get:
+      tags: [authentication]
+      summary: Complete Google sign-in
+      security: []
+      parameters: [{ $ref: '#/components/parameters/OAuthCode' }, { $ref: '#/components/parameters/OAuthState' }]
+      responses:
+        '302': {description: Redirect after setting the session cookie.}
+        '400': {$ref: '#/components/responses/InvalidRequest'}
+  /session:
+    get:
+      tags: [authentication]
+      summary: Read the current session
+      security: [{sessionCookie: []}]
+      responses:
+        '200': {description: Signed-in session., content: {application/json: {schema: {$ref: '#/components/schemas/Session'}}}}
+        '401': {$ref: '#/components/responses/Unauthenticated'}
+    delete:
+      tags: [authentication]
+      summary: Sign out and invalidate the session
+      security: [{sessionCookie: []}]
+      responses:
+        '204': {description: Session invalidated.}
+        '401': {$ref: '#/components/responses/Unauthenticated'}
+  /boards:
+    get:
+      tags: [boards]
+      summary: List owned boards
+      security: [{sessionCookie: []}]
+      parameters: [{$ref: '#/components/parameters/IncludeArchived'}]
+      responses:
+        '200': {description: 'Last-opened descending, then immutable ID ascending.', content: {application/json: {schema: {type: array, items: {$ref: '#/components/schemas/BoardSummary'}}}}}
+        '401': {$ref: '#/components/responses/Unauthenticated'}
+    post:
+      tags: [boards]
+      summary: Create an owned board
+      security: [{sessionCookie: []}]
+      requestBody: {required: true, content: {application/json: {schema: {$ref: '#/components/schemas/BoardInput'}, examples: {success: {value: {name: Personal}}, invalid: {value: {name: '   '}}}}}}
+      responses:
+        '201': {description: Created board., content: {application/json: {schema: {$ref: '#/components/schemas/Board'}}}}
+        '400': {$ref: '#/components/responses/Validation'}
+        '401': {$ref: '#/components/responses/Unauthenticated'}
+  /boards/{boardId}:
+    parameters: [{$ref: '#/components/parameters/BoardId'}]
+    get:
+      tags: [boards]
+      summary: Read an owned board
+      security: [{sessionCookie: []}]
+      responses:
+        '200': {description: Board., content: {application/json: {schema: {$ref: '#/components/schemas/Board'}}}}
+        '401': {$ref: '#/components/responses/Unauthenticated'}
+        '404': {$ref: '#/components/responses/Unavailable'}
+    patch:
+      tags: [boards]
+      summary: Rename an owned board
+      security: [{sessionCookie: []}]
+      requestBody: {required: true, content: {application/json: {schema: {$ref: '#/components/schemas/BoardInput'}}}}
+      responses:
+        '200': {description: Renamed board., content: {application/json: {schema: {$ref: '#/components/schemas/Board'}}}}
+        '400': {$ref: '#/components/responses/Validation'}
+        '401': {$ref: '#/components/responses/Unauthenticated'}
+        '404': {$ref: '#/components/responses/Unavailable'}
+  /boards/{boardId}/open:
+    post:
+      tags: [boards]
+      summary: Record board opening
+      security: [{sessionCookie: []}]
+      parameters: [{$ref: '#/components/parameters/BoardId'}]
+      responses:
+        '200': {description: Opened board., content: {application/json: {schema: {$ref: '#/components/schemas/Board'}}}}
+        '401': {$ref: '#/components/responses/Unauthenticated'}
+        '404': {$ref: '#/components/responses/Unavailable'}
+  /boards/{boardId}/archive:
+    post:
+      tags: [boards]
+      summary: Archive an owned board
+      security: [{sessionCookie: []}]
+      parameters: [{$ref: '#/components/parameters/BoardId'}]
+      responses:
+        '200': {description: Archived board., content: {application/json: {schema: {$ref: '#/components/schemas/Board'}}}}
+        '401': {$ref: '#/components/responses/Unauthenticated'}
+        '404': {$ref: '#/components/responses/Unavailable'}
+  /boards/{boardId}/restore:
+    post:
+      tags: [boards]
+      summary: Restore an owned board
+      security: [{sessionCookie: []}]
+      parameters: [{$ref: '#/components/parameters/BoardId'}]
+      responses:
+        '200': {description: Restored board., content: {application/json: {schema: {$ref: '#/components/schemas/Board'}}}}
+        '401': {$ref: '#/components/responses/Unauthenticated'}
+        '404': {$ref: '#/components/responses/Unavailable'}
+  /boards/{boardId}/tasks:
+    parameters: [{$ref: '#/components/parameters/BoardId'}]
+    get:
+      tags: [tasks]
+      summary: List tasks in creation order
+      security: [{sessionCookie: []}]
+      responses:
+        '200': {description: 'Oldest first; immutable ID breaks equal-time ties.', content: {application/json: {schema: {type: array, items: {$ref: '#/components/schemas/Task'}}}}}
+        '401': {$ref: '#/components/responses/Unauthenticated'}
+        '404': {$ref: '#/components/responses/Unavailable'}
+    post:
+      tags: [tasks]
+      summary: Create a task in To Do
+      security: [{sessionCookie: []}]
+      requestBody: {required: true, content: {application/json: {schema: {$ref: '#/components/schemas/TaskCreate'}, examples: {success: {value: {title: Plan release, description: Optional notes}}, invalid: {value: {title: '   '}}}}}}
+      responses:
+        '201': {description: Created task., content: {application/json: {schema: {$ref: '#/components/schemas/Task'}}}}
+        '400': {$ref: '#/components/responses/Validation'}
+        '401': {$ref: '#/components/responses/Unauthenticated'}
+        '404': {$ref: '#/components/responses/Unavailable'}
+  /boards/{boardId}/tasks/{taskId}:
+    parameters: [{$ref: '#/components/parameters/BoardId'}, {$ref: '#/components/parameters/TaskId'}]
+    get:
+      tags: [tasks]
+      summary: Read an owned task
+      security: [{sessionCookie: []}]
+      responses:
+        '200': {description: Task., content: {application/json: {schema: {$ref: '#/components/schemas/Task'}}}}
+        '401': {$ref: '#/components/responses/Unauthenticated'}
+        '404': {$ref: '#/components/responses/Unavailable'}
+    patch:
+      tags: [tasks]
+      summary: Edit task fields and status
+      description: Requires the observed task version. A stale version returns 409 with latest content and never overwrites or recreates a task.
+      security: [{sessionCookie: []}]
+      requestBody: {required: true, content: {application/json: {schema: {$ref: '#/components/schemas/TaskUpdate'}, examples: {success: {value: {title: Updated, description: Revised, status: doing, version: 2}}, stale: {value: {title: Stale draft, description: '', status: todo, version: 1}}}}}}
+      responses:
+        '200': {description: Updated task., content: {application/json: {schema: {$ref: '#/components/schemas/Task'}}}}
+        '400': {$ref: '#/components/responses/Validation'}
+        '401': {$ref: '#/components/responses/Unauthenticated'}
+        '404': {$ref: '#/components/responses/Unavailable'}
+        '409': {$ref: '#/components/responses/Conflict'}
+    delete:
+      tags: [tasks]
+      summary: Permanently delete a task
+      description: Requires the current task version; a stale draft cannot resurrect a deleted task.
+      security: [{sessionCookie: []}]
+      parameters: [{$ref: '#/components/parameters/Version'}]
+      responses:
+        '204': {description: Task deleted.}
+        '401': {$ref: '#/components/responses/Unauthenticated'}
+        '404': {$ref: '#/components/responses/Unavailable'}
+        '409': {$ref: '#/components/responses/Conflict'}
+  /boards/{boardId}/tasks/{taskId}/status:
+    patch:
+      tags: [tasks]
+      summary: Move a task between fixed columns
+      description: Requires the current task version. All transitions are allowed; board reassignment is impossible because boardId is fixed.
+      security: [{sessionCookie: []}]
+      parameters: [{$ref: '#/components/parameters/BoardId'}, {$ref: '#/components/parameters/TaskId'}]
+      requestBody: {required: true, content: {application/json: {schema: {$ref: '#/components/schemas/StatusUpdate'}}}}
+      responses:
+        '200': {description: Moved task., content: {application/json: {schema: {$ref: '#/components/schemas/Task'}}}}
+        '400': {$ref: '#/components/responses/Validation'}
+        '401': {$ref: '#/components/responses/Unauthenticated'}
+        '404': {$ref: '#/components/responses/Unavailable'}
+        '409': {$ref: '#/components/responses/Conflict'}
+  /search/tasks:
+    get:
+      tags: [search]
+      summary: Search owned task titles and descriptions
+      description: Query is trimmed and case-insensitive substring matching includes archived boards. Empty query returns an empty array. Results are newest-created first, then immutable ID ascending; pagination has no silent result cap.
+      security: [{sessionCookie: []}]
+      parameters:
+        - {name: q, in: query, required: true, schema: {type: string, minLength: 1}, example: release}
+        - {$ref: '#/components/parameters/Page'}
+        - {$ref: '#/components/parameters/PageSize'}
+      responses:
+        '200': {description: 'Search results with board and archive metadata.', content: {application/json: {schema: {type: array, items: {$ref: '#/components/schemas/SearchResult'}}, examples: {empty: {value: []}}}}}
+        '401': {$ref: '#/components/responses/Unauthenticated'}
+components:
+  securitySchemes:
+    sessionCookie: {type: apiKey, in: cookie, name: tidyboard_session}
+  parameters:
+    BoardId: {name: boardId, in: path, required: true, schema: {type: string, pattern: '^b[0-9]+$'}}
+    TaskId: {name: taskId, in: path, required: true, schema: {type: string, pattern: '^t[0-9]+$'}}
+    Version: {name: version, in: query, required: true, schema: {type: integer, minimum: 1}}
+    IncludeArchived: {name: includeArchived, in: query, required: false, schema: {type: boolean, default: true}}
+    Page: {name: page, in: query, required: false, schema: {type: integer, minimum: 1, default: 1}}
+    PageSize: {name: pageSize, in: query, required: false, schema: {type: integer, minimum: 1, maximum: 100, default: 50}}
+    OAuthCode: {name: code, in: query, required: true, schema: {type: string}}
+    OAuthState: {name: state, in: query, required: true, schema: {type: string}}
+  schemas:
+    Session: {type: object, required: [name, email], properties: {name: {type: string}, email: {type: string, format: email}}}
+    BoardInput: {type: object, required: [name], additionalProperties: false, properties: {name: {type: string, minLength: 1, maxLength: 120}}}
+    BoardSummary: {type: object, required: [id, name, archived, openedAt, taskCount], properties: {id: {type: string}, name: {type: string}, archived: {type: boolean}, openedAt: {type: string, format: date-time}, taskCount: {type: integer, minimum: 0}}}
+    Board: {allOf: [{$ref: '#/components/schemas/BoardSummary'}, {type: object, required: [tasks], properties: {tasks: {type: array, items: {$ref: '#/components/schemas/Task'}}}}]}
+    TaskCreate: {type: object, required: [title], additionalProperties: false, properties: {title: {type: string, minLength: 1, maxLength: 120}, description: {type: string, maxLength: 5000, default: ''}}}
+    TaskUpdate: {type: object, required: [title, description, status, version], additionalProperties: false, properties: {title: {type: string, minLength: 1, maxLength: 120}, description: {type: string, maxLength: 5000}, status: {$ref: '#/components/schemas/Status'}, version: {type: integer, minimum: 1}}}
+    StatusUpdate: {type: object, required: [status, version], additionalProperties: false, properties: {status: {$ref: '#/components/schemas/Status'}, version: {type: integer, minimum: 1}}}
+    Task: {type: object, required: [id, title, description, status, createdAt, version], properties: {id: {type: string}, title: {type: string}, description: {type: string}, status: {$ref: '#/components/schemas/Status'}, createdAt: {type: string, format: date-time}, version: {type: integer, minimum: 1}}}
+    SearchResult: {allOf: [{$ref: '#/components/schemas/Task'}, {type: object, required: [boardId, boardName, archived], properties: {boardId: {type: string}, boardName: {type: string}, archived: {type: boolean}}}]}
+    Status: {type: string, enum: [todo, doing, done]}
+    Error: {type: object, required: [code, message], properties: {code: {type: string}, message: {type: string}, requestId: {type: string}}}
+    Conflict: {type: object, required: [code, message, latest], properties: {code: {type: string, enum: [conflict]}, message: {type: string}, latest: {$ref: '#/components/schemas/Task'}}}
+  responses:
+    InvalidRequest: {description: Invalid OAuth callback or request., content: {application/json: {schema: {$ref: '#/components/schemas/Error'}, examples: {invalid: {value: {code: validation, message: Invalid sign-in callback.}}}}}}
+    Validation: {description: Invalid input or status., content: {application/json: {schema: {$ref: '#/components/schemas/Error'}, examples: {invalid: {value: {code: validation, message: Task title must be 1-120 characters.}}}}}}
+    Unauthenticated: {description: No valid session; no workspace data is disclosed., content: {application/json: {schema: {$ref: '#/components/schemas/Error'}, examples: {unauthenticated: {value: {code: unauthenticated, message: Sign in required.}}}}}}
+    Unavailable: {description: 'Missing or foreign resource; the same response prevents ownership disclosure.', content: {application/json: {schema: {$ref: '#/components/schemas/Error'}, examples: {unavailable: {value: {code: unavailable, message: Resource is unavailable.}}}}}}
+    Conflict: {description: 'Version precondition failed; latest content is returned for review.', content: {application/json: {schema: {$ref: '#/components/schemas/Conflict'}, examples: {stale: {value: {code: conflict, message: 'This task changed. Review the latest saved version.', latest: {id: t1, title: Newer, description: Updated, status: doing, createdAt: '2026-09-09T12:00:00Z', version: 2}}}}}}}

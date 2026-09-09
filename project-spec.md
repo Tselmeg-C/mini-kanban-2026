@@ -1,8 +1,8 @@
-# Mini Kanban — Product Specification
+# TidyBoard — Product Specification
 
 ## Purpose and audience
 
-Mini Kanban helps individuals organize personal work across multiple projects.
+TidyBoard helps individuals organize personal work across multiple projects.
 Each project has its own board. The first release is a desktop-first, online
 tool that people can access across devices using their Google account.
 
