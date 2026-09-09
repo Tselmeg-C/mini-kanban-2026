@@ -1,6 +1,6 @@
 # Build the kanban interface with mock data
 
-Status: DONE locally (Chromium QA PASS; GitHub synchronization pending)
+Status: IN PROGRESS (independent QA PARTIAL; reopened)
 GitHub issue: [#2](https://github.com/Tselmeg-C/mini-kanban-2026/issues/2)
 Grooming: criteria defined. Frontend implementation is now in progress.
 
@@ -29,6 +29,12 @@ Grooming: criteria defined. Frontend implementation is now in progress.
 
 QA passed on 2026-09-09. Broader browser matrix, scale, and full journey evidence
 remain part of issue #7; this local issue is ready for the next dependency.
+
+## Independent QA handoff
+
+**PARTIAL (2026-09-09):** current mock lifecycle and Chromium journey pass, but
+full long-content/scale and browser-matrix evidence is missing. See
+`docs/qa/independent-handoff-audit.md`.
 
 ## Goal
 

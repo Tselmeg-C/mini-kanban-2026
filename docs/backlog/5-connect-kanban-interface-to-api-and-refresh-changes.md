@@ -1,6 +1,6 @@
 # Connect the kanban interface to the API and refresh changes
 
-Status: DONE locally (QA PASS; GitHub synchronization pending)
+Status: IN PROGRESS (independent QA PARTIAL; reopened)
 GitHub issue: [#5](https://github.com/Tselmeg-C/mini-kanban-2026/issues/5)
 Grooming: criteria defined. Local real-client integration is implemented; durable
 storage and hosted authentication remain deferred by dependency/scope.
@@ -32,6 +32,13 @@ storage and hosted authentication remain deferred by dependency/scope.
 - [x] Authentication scope — PASS: Google OAuth remains deferred by explicit user
   decision; local integration uses the explicit `AUTH_DISABLED=1` development
   session and makes no hosted privacy claim.
+
+## Independent QA handoff
+
+**PARTIAL (2026-09-09):** real client, mock mode, local two-session refresh,
+errors, and integration pass. Polling stops when no board is open, so board-list
+changes are not refreshed there; hosted cross-device evidence is absent. See
+`docs/qa/independent-handoff-audit.md`.
 
 ## Goal
 

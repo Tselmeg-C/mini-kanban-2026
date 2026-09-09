@@ -1,6 +1,6 @@
 # Persist boards and tasks in SQLite
 
-Status: DONE (QA PASS; GitHub issue closed)
+Status: IN PROGRESS (independent QA PARTIAL; reopened)
 GitHub issue: [#6](https://github.com/Tselmeg-C/mini-kanban-2026/issues/6)
 Grooming: criteria defined; implementation complete and verified locally.
 
@@ -37,6 +37,13 @@ disabled.
 ## Verification
 
 Run SQLite-backed tests and a real restart-persistence check with a disposable database; record setup repeatability and concurrency results. PASS: 7 backend tests, including restart persistence and stale-write/delete checks.
+
+## Independent QA handoff
+
+**PARTIAL (2026-09-09):** restart persistence, isolated tests, archive/search,
+ownership, deletion, and sequential stale writes pass. Genuine concurrent writes
+are untested and route check/mutate/persist has no explicit atomic lock or
+conditional database update. See `docs/qa/independent-handoff-audit.md`.
 
 ## References
 

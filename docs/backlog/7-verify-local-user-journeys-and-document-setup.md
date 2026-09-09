@@ -1,6 +1,6 @@
 # Verify local user journeys and document setup
 
-Status: DONE (QA PASS; release gaps documented; GitHub issue closed)
+Status: IN PROGRESS (independent QA FAIL; reopened)
 GitHub issue: [#7](https://github.com/Tselmeg-C/mini-kanban-2026/issues/7)
 Grooming: criteria defined; local verification and setup documentation complete.
 
@@ -35,6 +35,13 @@ Verify the local implementation and document exactly which product promises are 
 ## Verification
 
 Independent QA compares every criterion to running behavior and records exact commands/results in `docs/qa/local-user-journeys.md`. Local scope passes; deployment and full scale evidence remain explicit release gaps.
+
+## Independent QA handoff
+
+**FAIL (2026-09-09):** the required 20-board × 200-task visual usability run
+was not performed. Clean setup, browser, API, contract, and documentation
+checks pass, but the issue cannot be closed until that criterion is verified.
+See `docs/qa/independent-handoff-audit.md`.
 
 ## References
 

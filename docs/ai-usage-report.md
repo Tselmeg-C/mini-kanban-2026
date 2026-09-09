@@ -93,3 +93,11 @@ backend, and OpenAPI checks all pass; OAuth remains deferred.
   2 tests, API integration 1 test, and OpenAPI validation pass.
 - Limitations: hosted Google OAuth, physical/public-device evidence, other
   browsers, and the full 20-by-200 visual scale run remain release follow-ups.
+
+## Independent QA backfill
+
+- A separate QA pass audited each engineering handoff for issues #1–#7 without
+  modifying implementation, tests, or docs.
+- Verdicts: #1 PARTIAL, #2 PARTIAL, #3 PASS, #4 PASS for approved local scope,
+  #5 PARTIAL, #6 PARTIAL, and #7 FAIL. Evidence and reopened issue actions are
+  recorded in `docs/qa/independent-handoff-audit.md`.

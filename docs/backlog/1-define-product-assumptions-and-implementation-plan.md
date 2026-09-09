@@ -1,6 +1,6 @@
 # Define product assumptions and implementation plan
 
-Status: IN PROGRESS (local; GitHub synchronization pending)
+Status: IN PROGRESS (independent QA PARTIAL)
 GitHub issue: [#1](https://github.com/Tselmeg-C/mini-kanban-2026/issues/1)
 Grooming: reviewed against the task template; existing criteria retained.
 Implementation: planning documents written; independent QA pending.
@@ -59,3 +59,9 @@ Source documents are currently available in the local checkout; they have not ye
 - No application tests apply to this documentation-only change.
 - Independent QA, commit/publication, and GitHub handoff remain pending.
   Criteria stay unchecked until independent verification.
+
+## Independent QA handoff
+
+**PARTIAL (2026-09-09):** planning coverage is present, but material release
+decisions remain unresolved and this was the first independent review. See
+`docs/qa/independent-handoff-audit.md`.

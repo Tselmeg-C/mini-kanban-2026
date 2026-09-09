@@ -1,6 +1,6 @@
 # Define the OpenAPI contract for boards and tasks
 
-Status: DONE locally (QA PASS; GitHub synchronization pending)
+Status: DONE (independent QA PASS)
 GitHub issue: [#3](https://github.com/Tselmeg-C/mini-kanban-2026/issues/3)
 Grooming: criteria defined. Contract implementation is complete locally.
 
@@ -12,6 +12,12 @@ Grooming: criteria defined. Contract implementation is complete locally.
 - Storage, backend, credentials, and deployment remain out of scope.
 - Independent QA PASS: validator and contract assertions passed on 2026-09-09.
 - Commit and GitHub synchronization remain pending.
+
+## Independent QA handoff
+
+**PASS (2026-09-09):** the contract validator reports 18 valid operations and
+the documented operation, security, ownership, validation, conflict, ordering,
+and error mappings are present. See `docs/qa/independent-handoff-audit.md`.
 
 ## QA: PASS
 

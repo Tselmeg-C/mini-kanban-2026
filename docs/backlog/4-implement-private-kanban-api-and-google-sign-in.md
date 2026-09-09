@@ -1,6 +1,6 @@
 # Implement the private kanban API and Google sign-in
 
-Status: DONE locally (QA PASS; authentication deferred; GitHub synchronization pending)
+Status: DONE (independent QA PASS for approved local scope; authentication deferred)
 GitHub issue: [#4](https://github.com/Tselmeg-C/mini-kanban-2026/issues/4)
 Grooming: criteria defined. The user explicitly deferred authentication from this
 project milestone; real Google OAuth, private hosted workspaces, and external
@@ -29,6 +29,13 @@ account verification are release follow-up work.
   decision; unconfigured callback behavior is safe and no OAuth completion claim
   is made.
 - Independent QA, commit, and GitHub synchronization remain pending.
+
+## Independent QA handoff
+
+**PASS for approved local scope (2026-09-09):** lifecycle, CSRF, expiry,
+ownership boundary, validation, conflicts, and safe unconfigured OAuth behavior
+pass. Real Google and two external-account checks remain intentionally deferred.
+See `docs/qa/independent-handoff-audit.md`.
 
 ## Goal
 
