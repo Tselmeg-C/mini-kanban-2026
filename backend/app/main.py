@@ -8,6 +8,7 @@ from datetime import datetime, timedelta, timezone
 from typing import Annotated
 
 from fastapi import Cookie, Depends, FastAPI, Header, HTTPException, Query, Request, Response, status
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from fastapi.responses import RedirectResponse
@@ -124,6 +125,7 @@ class Store:
 
 store = Store()
 app = FastAPI(title="TidyBoard API", version="0.1.0")
+app.add_middleware(CORSMiddleware, allow_origins=[os.getenv("FRONTEND_ORIGIN", "http://localhost:4173")], allow_credentials=True, allow_methods=["*"], allow_headers=["Content-Type", "X-CSRF-Token"])
 
 
 @app.exception_handler(HTTPException)
@@ -138,6 +140,16 @@ async def validation_error(_: Request, __: RequestValidationError) -> JSONRespon
 
 def current_session(tidyboard_session: Annotated[str | None, Cookie()] = None) -> dict:
     return store.identity(tidyboard_session)
+
+
+@app.post("/dev/session", response_model=Session)
+def dev_session(response: Response) -> Session:
+    if os.getenv("AUTH_DISABLED") != "1":
+        raise HTTPException(status.HTTP_404_NOT_FOUND, detail=UNAVAILABLE)
+    token, csrf_token = store.create_session("local-user", "Local user", "local@example.test")
+    response.set_cookie(SESSION_COOKIE, token, httponly=True, samesite="lax")
+    response.set_cookie(CSRF_COOKIE, csrf_token, httponly=False, samesite="lax")
+    return store.sessions[token]["session"]
 
 
 def csrf(session: Annotated[dict, Depends(current_session)], tidyboard_csrf: Annotated[str | None, Cookie()] = None, x_csrf_token: Annotated[str | None, Header()] = None) -> dict:

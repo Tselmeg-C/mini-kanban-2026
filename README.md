@@ -10,6 +10,7 @@ durable storage is included yet.
 cd frontend
 npm test
 npm run test:browser
+npm run test:integration
 npm run validate:openapi
 python3 -m http.server 4173
 ```
@@ -25,6 +26,8 @@ archive/restore, deletion, and search. The service boundary lives in
 search, archive, deletion, and stale-edit behavior. `npm run test:browser`
 launches Chromium through Playwright for the core mock journey and archive flow.
 `npm run validate:openapi` validates the root API contract before backend work.
+`npm run test:integration` starts the temporary API with `AUTH_DISABLED=1` and
+checks the real frontend client against it.
 
 ## Backend
 
@@ -38,3 +41,8 @@ uv run python -m unittest discover -s tests -v
 The backend currently uses an explicit temporary in-memory store. Google OAuth
 configuration names are documented in `backend/README.md`; without credentials,
 the OAuth endpoints fail safely and do not create a session.
+
+To exercise the real frontend client locally, start the backend with
+`AUTH_DISABLED=1` and open <http://localhost:4173/?api=1>. Mock mode remains the
+default. The local API client uses `http://localhost:8000` unless
+`localStorage.tidyboard-api-url` overrides it.

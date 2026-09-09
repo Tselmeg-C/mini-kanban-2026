@@ -58,3 +58,15 @@ work rather than a blocker for the local API milestone.
 
 QA PASS for the revised local scope: six backend tests, OpenAPI validation, code
 compilation, and Uvicorn startup smoke passed. OAuth remains deferred.
+
+## Issue #5 — real API client
+
+- Work: added a selectable OpenAPI client, explicit local dev session, CORS
+  configuration, three-second visible-state polling, and real-client browser
+  integration coverage.
+- Validation: mock tests (4), Chromium mock tests (2), integration browser test
+  (1), backend tests (6), and OpenAPI validation all pass.
+- Independent QA: pending.
+
+QA PASS for the revised local scope: mock, Chromium, real-client integration,
+backend, and OpenAPI checks all pass; OAuth remains deferred.

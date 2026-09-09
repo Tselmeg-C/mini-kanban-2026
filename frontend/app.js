@@ -1,13 +1,17 @@
 import { MockKanbanService, ServiceError, STATUSES, STATUS_LABELS } from './service.js';
+import { ApiService } from './api-service.js';
 
-const service = new MockKanbanService();
+const params = new URLSearchParams(location.search);
+const service = params.get('api') === '1' ? new ApiService(localStorage.getItem('tidyboard-api-url') || 'http://localhost:8000') : new MockKanbanService();
 const $ = selector => document.querySelector(selector);
 const state = { session: null, boards: [], board: null, tasks: [], draft: null, activeTab: 'active', query: '' };
+let refreshing = false;
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
 const message = (text, kind = 'status') => { $('#message').textContent = text; $('#message').className = kind; };
 const run = async (work, success = '') => { message('Saving…'); try { const result = await work(); if (success) message(success, 'success'); return result; } catch (error) { message(error.message, 'error'); return null; } };
 
 async function refreshBoards() { state.boards = await service.listBoards(); renderBoards(); }
+async function refreshVisible() { if (refreshing || !state.session || !state.board) return; refreshing = true; try { state.boards = await service.listBoards(); state.tasks = await service.listTasks(state.board.id); if (!state.draft) renderBoard(); else renderBoards(); } catch (error) { if (error.code === 'expired' || error.code === 'unauthenticated') message('Your session expired. Sign in again.', 'error'); } finally { refreshing = false; } }
 async function openBoard(id) { await run(async () => { state.board = await service.openBoard(id); state.tasks = await service.listTasks(id); state.draft = null; await refreshBoards(); renderBoard(); }, 'Board opened.'); }
 function renderBoards() { const list = state.boards.filter(board => state.activeTab === 'active' ? !board.archived : board.archived); $('#boards').innerHTML = list.length ? list.map(board => `<li><button class="board-link" data-board="${board.id}">${esc(board.name)} <small>${board.taskCount}</small></button><button class="archive" data-archive="${board.id}">${board.archived ? 'Restore' : 'Archive'}</button></li>`).join('') : '<li class="empty">No boards here yet.</li>'; $('#active-tab').ariaPressed = state.activeTab === 'active'; $('#archive-tab').ariaPressed = state.activeTab === 'archive'; }
 function renderBoard() { const board = state.board; $('#board-title').textContent = board ? board.name : 'Choose a board'; $('#board').hidden = !board; if (!board) return; if (!$('#rename-board')) { const button = document.createElement('button'); button.id = 'rename-board'; button.className = 'secondary'; button.textContent = 'Rename'; $('#board-title').after(button); } $('#columns').innerHTML = STATUSES.map(status => `<section class="column" data-status="${status}"><h3>${STATUS_LABELS[status]}</h3>${state.tasks.filter(task => task.status === status).map(task => `<article class="task" draggable="true" data-task="${task.id}"><button class="task-open" data-task="${task.id}"><strong>${esc(task.title)}</strong><span>${esc(task.description)}</span></button></article>`).join('') || '<p class="empty">No tasks.</p>'}</section>`).join(''); }
@@ -27,6 +31,7 @@ document.addEventListener('dragstart', event => { if (event.target.dataset.task)
 document.addEventListener('dragover', event => { if (event.target.closest('.column')) event.preventDefault(); });
 document.addEventListener('drop', event => { const column = event.target.closest('.column'); if (column) { event.preventDefault(); moveTask(event.dataTransfer.getData('text/plain'), column.dataset.status); } });
 init();
+setInterval(refreshVisible, 3000);
 document.addEventListener('click', async event => {
   if (event.target.id !== 'rename-board' || !state.board) return;
   const name = prompt('Board name', state.board.name);

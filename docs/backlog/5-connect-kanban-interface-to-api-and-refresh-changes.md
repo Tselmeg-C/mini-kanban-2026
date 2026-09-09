@@ -1,8 +1,37 @@
 # Connect the kanban interface to the API and refresh changes
 
-Status: TODO
+Status: DONE locally (QA PASS; GitHub synchronization pending)
 GitHub issue: [#5](https://github.com/Tselmeg-C/mini-kanban-2026/issues/5)
-Grooming: criteria defined; implementation has not started.
+Grooming: criteria defined. Local real-client integration is implemented; durable
+storage and hosted authentication remain deferred by dependency/scope.
+
+## Local engineering handoff
+
+- `frontend/api-service.js` implements the OpenAPI client; `?api=1` selects it,
+  while mock mode remains the default.
+- `AUTH_DISABLED=1` enables the explicit local development session endpoint;
+  OAuth remains deferred and no hosted privacy claim is made.
+- Visible board/task state polls every three seconds without replacing an open
+  draft. API errors, conflicts, and remote deletion retain the existing UI flow.
+- `npm run test:integration` passes the real frontend client against Uvicorn;
+  mock, browser, backend, and OpenAPI checks also pass.
+- Independent QA, commit, and GitHub synchronization remain pending.
+
+## QA: PASS for the revised local scope
+
+- [x] Selectable real API client and mock preservation — PASS: `?api=1` uses the
+  OpenAPI client; default mode remains mock.
+- [x] Real board/task/search journey — PASS: integration Chromium test creates a
+  board and task against Uvicorn and finds it through API search.
+- [x] Two-session refresh — PASS: a second local browser session creates a task;
+  the first session observes it through polling within the test window.
+- [x] Error/conflict/draft behavior — PASS: service and browser suites cover
+  failed requests, stale writes, dirty drafts, deletion, and retry behavior.
+- [x] Contract and regression checks — PASS: frontend (4), mock browser (2),
+  integration browser (1), backend (6), and OpenAPI validation all pass.
+- [x] Authentication scope — PASS: Google OAuth remains deferred by explicit user
+  decision; local integration uses the explicit `AUTH_DISABLED=1` development
+  session and makes no hosted privacy claim.
 
 ## Goal
 
