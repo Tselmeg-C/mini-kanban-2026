@@ -1,6 +1,6 @@
 # Persist boards and tasks in SQLite
 
-Status: IN PROGRESS (independent QA PARTIAL; reopened)
+Status: DONE (independent QA PASS)
 GitHub issue: [#6](https://github.com/Tselmeg-C/mini-kanban-2026/issues/6)
 Grooming: criteria defined; implementation complete and verified locally.
 
@@ -46,12 +46,24 @@ Run SQLite-backed tests and a real restart-persistence check with a disposable d
   `200` and one `409`.
 - Focused check: `uv run python -m unittest discover -s tests -v` — 8 passed.
 
-## Independent QA handoff
+## QA: PASS
 
-**PARTIAL (2026-09-09):** restart persistence, isolated tests, archive/search,
-ownership, deletion, and sequential stale writes pass. Genuine concurrent writes
-are untested and route check/mutate/persist has no explicit atomic lock or
-conditional database update. The formal QA report is recorded on this issue.
+- [x] SQLite persistence preserves the API and frontend behavior — PASS: store,
+  frontend tests, and OpenAPI validation.
+- [x] `DATABASE_PATH`, safe default, and repeatable schema setup — PASS.
+- [x] Create/edit/move/archive/restart/sign-in-again preserves fields, ownership,
+  search, and archive state — PASS: disposable restart check.
+- [x] Lifecycle, contract, isolation, validation, missing-task, archived-board,
+  and two-account checks use isolated SQLite data — PASS.
+- [x] Competing writes accept one matching version atomically; failures preserve
+  data and deleted tasks stay deleted — PASS: concurrent test returned `200`/`409`.
+- [x] Database artifacts remain untracked and storage setup is documented — PASS.
+
+Tests: `uv run python -m unittest discover -s tests -v` — 8 passed.
+Tests: `npm test` — 4 passed.
+Tests: `npm run validate:openapi` — 18 operations valid.
+Focused disposable restart/all-fields/ownership/search/archive check — passed.
+QA did not modify implementation or tests.
 
 ## References
 
