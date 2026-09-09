@@ -7,6 +7,11 @@ PM grooming is complete. Independent QA has now audited each engineering handoff
 partial and failed findings are reopened for engineering follow-up.
 **NEXT: #9 — Implement the user-approved cross-device release architecture.**
 
+Session checkpoint (2026-09-09): local-only authentication scope is finalized;
+issue #4 is closed after independent QA PASS. Backend, frontend, browser,
+integration, OpenAPI, compile, and diff checks passed. Latest pushed commits:
+`1b43a89`, `542f30e`.
+
 - [x] DONE (independent QA PASS) — [#1 Define product assumptions and implementation plan](1-define-product-assumptions-and-implementation-plan.md) · [GitHub](https://github.com/Tselmeg-C/mini-kanban-2026/issues/1)
 - [x] DONE (independent QA PASS) — [#2 Build the kanban interface with mock data](2-build-kanban-interface-with-mock-data.md) · [GitHub](https://github.com/Tselmeg-C/mini-kanban-2026/issues/2) · depends on #1
 - [x] DONE (independent QA PASS) — [#3 Define the OpenAPI contract for boards and tasks](3-define-openapi-contract-for-boards-and-tasks.md) · [GitHub](https://github.com/Tselmeg-C/mini-kanban-2026/issues/3) · depends on #2
