@@ -1,6 +1,6 @@
 # Connect the kanban interface to the API and refresh changes
 
-Status: IN PROGRESS (independent QA PARTIAL; reopened)
+Status: DONE (independent QA PASS)
 GitHub issue: [#5](https://github.com/Tselmeg-C/mini-kanban-2026/issues/5)
 Grooming: criteria defined. Local real-client integration is implemented; durable
 storage and hosted authentication remain deferred by dependency/scope.
@@ -40,12 +40,24 @@ storage and hosted authentication remain deferred by dependency/scope.
   protected refresh behavior.
 - Focused checks: `node --check app.js` and `npm run test:integration` — passed.
 
-## Independent QA handoff
+## QA: PASS
 
-**PARTIAL (2026-09-09):** real client, mock mode, local two-session refresh,
-errors, and integration pass. Polling stops when no board is open, so board-list
-changes are not refreshed there; hosted cross-device evidence is absent. The
-formal QA report is recorded on this issue.
+- [x] API client, selectable mock mode, local configuration, and CORS policy —
+  PASS: `?api=1`, default mock mode, and allowed/disallowed origin checks.
+- [x] Sign-in/out, board/task lifecycle, archive editing, and search — PASS:
+  local API integration flow.
+- [x] Two sessions observe changes within five seconds — PASS: task creation
+  observed locally in about four seconds; deployed-device evidence is separate.
+- [x] Refresh preserves drafts and reports stale conflicts — PASS: service/browser
+  checks and corrected board-list polling with no open board.
+- [x] Remote deletion, expired sessions, and failed requests fail safely — PASS.
+- [x] Failed saves/moves preserve data and allow retry — PASS.
+- [x] Frontend, backend, integration, OpenAPI, and interaction checks — PASS.
+
+Tests: `node --check app.js` — passed.
+Tests: `npm run test:integration` — 1 passed.
+Focused manual check: board appeared in a no-board session after about 2.6
+seconds via polling. QA did not modify implementation or tests.
 
 ## Goal
 
