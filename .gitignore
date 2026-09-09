@@ -1,0 +1,15 @@
+.env
+.env.*
+!.env.example
+node_modules/
+dist/
+build/
+coverage/
+.cache/
+.DS_Store
+npm-debug.log*
+__pycache__/
+*.pyc
+*.sqlite3
+*.db
+.pytest_cache/
