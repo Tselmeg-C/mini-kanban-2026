@@ -38,6 +38,14 @@ disabled.
 
 Run SQLite-backed tests and a real restart-persistence check with a disposable database; record setup repeatability and concurrency results. PASS: 7 backend tests, including restart persistence and stale-write/delete checks.
 
+## Engineering correction handoff
+
+- Added a process-local reentrant lock around update, move, and delete
+  version-check/mutate/persist sequences.
+- Added a concurrent API test proving two version-1 writes produce exactly one
+  `200` and one `409`.
+- Focused check: `uv run python -m unittest discover -s tests -v` — 8 passed.
+
 ## Independent QA handoff
 
 **PARTIAL (2026-09-09):** restart persistence, isolated tests, archive/search,

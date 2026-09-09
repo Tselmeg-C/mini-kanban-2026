@@ -5,6 +5,7 @@ import json
 import os
 import secrets
 import sqlite3
+import threading
 from datetime import datetime, timedelta, timezone
 from typing import Annotated
 
@@ -95,6 +96,7 @@ class SearchResult(Task):
 class Store:
     def __init__(self, db_path: str | None = None) -> None:
         self.db_path = db_path or os.getenv("DATABASE_PATH", os.path.join(os.path.dirname(os.path.dirname(__file__)), "tidyboard.sqlite3"))
+        self.lock = threading.RLock()
         self._connection: sqlite3.Connection | None = None
         self.boards: dict[str, dict] = {}
         self.sessions: dict[str, dict] = {}
@@ -308,17 +310,20 @@ def check_status(value: str) -> str:
 
 @app.patch("/boards/{board_id}/tasks/{task_id}", response_model=Task)
 def update_task(board_id: str, task_id: str, body: TaskUpdate, session: CsrfDep) -> Task:
-    _, task = store.task(session["subject"], board_id, task_id); check_version(task, body.version); task.update(title=body.title, description=body.description, status=check_status(body.status), version=task["version"] + 1); store.persist(); return task_view(task)
+    with store.lock:
+        _, task = store.task(session["subject"], board_id, task_id); check_version(task, body.version); task.update(title=body.title, description=body.description, status=check_status(body.status), version=task["version"] + 1); store.persist(); return task_view(task)
 
 
 @app.delete("/boards/{board_id}/tasks/{task_id}", status_code=204)
 def delete_task(board_id: str, task_id: str, version: Annotated[int, Query(ge=1)], session: CsrfDep) -> None:
-    board, task = store.task(session["subject"], board_id, task_id); check_version(task, version); board["tasks"].remove(task); store.persist()
+    with store.lock:
+        board, task = store.task(session["subject"], board_id, task_id); check_version(task, version); board["tasks"].remove(task); store.persist()
 
 
 @app.patch("/boards/{board_id}/tasks/{task_id}/status", response_model=Task)
 def move_task(board_id: str, task_id: str, body: StatusUpdate, session: CsrfDep) -> Task:
-    _, task = store.task(session["subject"], board_id, task_id); check_version(task, body.version); task.update(status=check_status(body.status), version=task["version"] + 1); store.persist(); return task_view(task)
+    with store.lock:
+        _, task = store.task(session["subject"], board_id, task_id); check_version(task, body.version); task.update(status=check_status(body.status), version=task["version"] + 1); store.persist(); return task_view(task)
 
 
 @app.get("/search/tasks", response_model=list[SearchResult])

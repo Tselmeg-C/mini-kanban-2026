@@ -1,5 +1,6 @@
 import unittest
 from datetime import timedelta
+from concurrent.futures import ThreadPoolExecutor
 import os
 import tempfile
 
@@ -80,6 +81,20 @@ class ApiTests(unittest.TestCase):
         loaded = self.client.get(f"/boards/{board['id']}").json()
         self.assertEqual(loaded['name'], 'Saved')
         self.assertEqual(loaded['tasks'][0]['id'], task['id'])
+
+    def test_competing_writes_accept_only_one_matching_version(self):
+        self.login('alice')
+        board = self.client.post('/boards', json={'name': 'Concurrent'}).json()
+        task = self.client.post(f"/boards/{board['id']}/tasks", json={'title': 'Original'}).json()
+        cookies = dict(self.client.cookies); headers = {'X-CSRF-Token': cookies[CSRF_COOKIE]}
+
+        def write(title):
+            client = TestClient(app); client.cookies.update(cookies); client.headers.update(headers)
+            return client.patch(f"/boards/{board['id']}/tasks/{task['id']}", json={'title': title, 'description': '', 'status': 'todo', 'version': 1}).status_code
+
+        with ThreadPoolExecutor(max_workers=2) as pool:
+            statuses = sorted(pool.map(write, ('First', 'Second')))
+        self.assertEqual(statuses, [200, 409])
 
 
 if __name__ == '__main__':
