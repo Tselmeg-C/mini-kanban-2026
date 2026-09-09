@@ -1,6 +1,6 @@
 # Plan cross-device release and hosting
 
-Status: TODO
+Status: IN PROGRESS (engineering handoff; QA pending)
 GitHub issue: [#8](https://github.com/Tselmeg-C/mini-kanban-2026/issues/8)
 Grooming: criteria defined; implementation has not started.
 
@@ -31,6 +31,14 @@ Produce a concrete, reviewable plan for the release required by the cross-device
 - Preserve product scope and require user review for material new decisions.
 - Keep the local SQLite milestone separate from production storage decisions.
 - Follow the PM → engineering → independent QA lifecycle; only the orchestrator closes after QA PASS.
+
+## Engineering handoff
+
+- Added `docs/release-plan.md` with requirements, unresolved user decisions,
+  deployed evidence, and rollback boundaries.
+- Created linked follow-ups #9 (release implementation) and #10 (deployed
+  verification), each with checkable criteria and synchronized local files.
+- No infrastructure, OAuth settings, paid provider, or credentials were changed.
 
 ## Verification
 

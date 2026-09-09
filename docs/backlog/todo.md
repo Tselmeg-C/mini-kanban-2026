@@ -5,7 +5,7 @@ Statuses: TODO = not started; IN PROGRESS = active; DONE = independent QA PASS a
 
 PM grooming is complete. Independent QA has now audited each engineering handoff;
 partial and failed findings are reopened for engineering follow-up.
-**NEXT: #8 — Plan cross-device release and hosting.**
+**NEXT: #8 — QA the cross-device release plan.**
 
 - [x] DONE (independent QA PASS) — [#1 Define product assumptions and implementation plan](1-define-product-assumptions-and-implementation-plan.md) · [GitHub](https://github.com/Tselmeg-C/mini-kanban-2026/issues/1)
 - [x] DONE (independent QA PASS) — [#2 Build the kanban interface with mock data](2-build-kanban-interface-with-mock-data.md) · [GitHub](https://github.com/Tselmeg-C/mini-kanban-2026/issues/2) · depends on #1
@@ -15,6 +15,8 @@ partial and failed findings are reopened for engineering follow-up.
 - [x] DONE (independent QA PASS) — [#6 Persist boards and tasks in SQLite](6-persist-boards-and-tasks-in-sqlite.md) · [GitHub](https://github.com/Tselmeg-C/mini-kanban-2026/issues/6) · depends on #5
 - [x] DONE (independent QA PASS) — [#7 Verify local user journeys and document setup](7-verify-local-user-journeys-and-document-setup.md) · [GitHub](https://github.com/Tselmeg-C/mini-kanban-2026/issues/7) · depends on #6
 - [ ] TODO — [#8 Plan cross-device release and hosting](8-plan-cross-device-release-and-hosting.md) · [GitHub](https://github.com/Tselmeg-C/mini-kanban-2026/issues/8) · depends on #7
+- [ ] TODO — [#9 Release implementation](9-release-implementation.md) · [GitHub](https://github.com/Tselmeg-C/mini-kanban-2026/issues/9) · depends on #8
+- [ ] TODO — [#10 Deployed verification](10-deployed-verification.md) · [GitHub](https://github.com/Tselmeg-C/mini-kanban-2026/issues/10) · depends on #9
 
 Keep issue titles, acceptance criteria, status, and dependencies synchronized after each handoff. No application implementation or QA completion is claimed. Source documents are still local and uncommitted.
 
