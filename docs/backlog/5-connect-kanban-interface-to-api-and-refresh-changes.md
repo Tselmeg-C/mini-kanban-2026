@@ -33,6 +33,13 @@ storage and hosted authentication remain deferred by dependency/scope.
   decision; local integration uses the explicit `AUTH_DISABLED=1` development
   session and makes no hosted privacy claim.
 
+## Engineering correction handoff
+
+- Updated `refreshVisible` so authenticated sessions refresh the board list even
+  when no board is currently open; open-board drafts and tasks retain the prior
+  protected refresh behavior.
+- Focused checks: `node --check app.js` and `npm run test:integration` — passed.
+
 ## Independent QA handoff
 
 **PARTIAL (2026-09-09):** real client, mock mode, local two-session refresh,
