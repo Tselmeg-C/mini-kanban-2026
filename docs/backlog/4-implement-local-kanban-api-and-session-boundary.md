@@ -1,6 +1,6 @@
 # Implement the local kanban API and session boundary
 
-Status: IN PROGRESS (scope correction; QA pending)
+Status: DONE (independent QA PASS; external authentication excluded)
 GitHub issue: [#4](https://github.com/Tselmeg-C/mini-kanban-2026/issues/4)
 Grooming: criteria defined. The user removed Google OAuth and all external
 authentication from the project design; local mock sessions are the complete
@@ -8,9 +8,9 @@ authentication scope.
 
 ## Local engineering handoff
 
-- `backend/` contains the FastAPI app, temporary in-memory store, lifecycle
-  routes, search, and version conflicts. Session/authentication work is deferred.
-- `uv run python -m unittest discover -s tests -v` passes 6 endpoint tests.
+- `backend/` contains the FastAPI app, local session boundary, SQLite-backed
+  lifecycle routes, search, and version conflicts.
+- `uv run python -m unittest discover -s tests -v` passes 8 endpoint tests.
 - `npm run validate:openapi` passes the root contract with 17 operations.
 - External sign-in, hosted privacy, and public account isolation are outside the
   project and must not be presented as completed.
@@ -29,8 +29,6 @@ authentication scope.
   local development session is explicit and no provider credentials exist.
 - Independent QA, commit, and GitHub synchronization remain pending.
 
-## Independent QA handoff
-
 ## Engineering correction handoff
 
 - Removed external authentication and Google/OAuth routes, schemas, tests, UI
@@ -40,15 +38,21 @@ authentication scope.
 - Checks: backend 8 tests, frontend 4 tests, browser 3 tests, integration 1
   test, and OpenAPI validation with 17 operations all pass.
 
-## Independent QA handoff
+## QA: PASS
 
-**PASS (2026-09-09):** lifecycle, CSRF, expiry, local ownership boundary,
-validation, and conflicts pass. External authentication is outside scope.
-The formal QA report is recorded on this issue.
+- [x] API contract, FastAPI implementation, SQLite-backed local session boundary, and explicit seed setup — PASS
+- [x] Local session, current-session, expiry, sign-out, and unauthenticated access — PASS
+- [x] Ownership enforcement across board/task operations, search, and direct IDs — PASS
+- [x] Board/task lifecycle, fixed columns, transitions, deletion, archive/restore, and archived search — PASS
+- [x] Validation, ordering, unavailable records, reassignment protection, and archived task operations — PASS
+- [x] Atomic stale-write rejection and deleted-task resurrection prevention — PASS
+- [x] Endpoint schemas/statuses, lifecycle, empty results, validation, failures, isolation, and conflicts — PASS
+
+Tests: `cd backend && uv run python -m unittest discover -s tests -v` — 8 passed; `cd frontend && npm test` — 4 passed; `cd frontend && npm run test:browser` — 3 passed; `cd frontend && npm run test:integration` — 1 passed; `cd frontend && npm run validate:openapi` — OpenAPI valid: 17 operations; `cd backend && python -m compileall -q app tests && git diff --check` — passed. Manual local-session, external-route, and foreign-operation checks — passed.
 
 ## Goal
 
-Implement the contract with a tested private workspace and temporary state.
+Implement the contract with a tested local workspace and explicit local session.
 
 ## Dependencies
 
@@ -56,7 +60,7 @@ Implement the contract with a tested private workspace and temporary state.
 
 ## Acceptance criteria
 
-- [ ] backend/ implements openapi.yaml with FastAPI and an explicitly temporary in-memory store. Document local run/test commands and explicit seed setup; never automatically inject development users into real authentication.
+- [ ] backend/ implements the API contract with FastAPI and the explicit local session boundary backed by the current SQLite store. Document local run/test commands and explicit seed setup; never inject external identities or provider users.
 - [ ] Implement the local development session, current-session, expiry, and sign-out. Test invalid/expired session behavior; an absent or expired session grants no workspace access.
 - [ ] Derive ownership from authenticated identity and enforce it on every board/task operation, search, and direct-ID access. Two-account tests prove foreign data cannot be read, modified, moved, or deleted.
 - [ ] Implement board creation/rename/open-recency/archive/restore, fixed columns, title-only To Do task creation, editing, all status transitions, permanent deletion, and title/description search including archived results.
@@ -66,10 +70,10 @@ Implement the contract with a tested private workspace and temporary state.
 
 ## Out of scope
 
-- External authentication, hosted privacy, SQLite persistence, real frontend
-  integration, or hosting. Public identity and account isolation are outside
-  this project.
-- Those belong to issues #6, #5, and #8 respectively.
+- External authentication, hosted privacy, real frontend integration, or
+  hosting. Public identity and account isolation are outside this project.
+- Real frontend integration is covered by issue #5; hosting remains outside this
+  project. The SQLite store is part of the current local implementation.
 
 ## Constraints
 

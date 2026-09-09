@@ -14,7 +14,7 @@ cross-device product behavior.
 
 ## Acceptance criteria
 
-- [ ] The approved local identity/session design accesses saved work on two actual devices and service restart preserves it; no Google/OAuth flow is assumed.
+- [ ] The approved local identity/session design accesses saved work on two actual devices and service restart preserves it; no external authentication flow is assumed.
 - [ ] Confirmed board/task changes appear on the second device within about five seconds under normal connectivity.
 - [ ] A second account cannot read, search, or mutate the first account's work.
 - [ ] Stale edits, remote deletion, connection failure, retry, and draft preservation behave as specified.
