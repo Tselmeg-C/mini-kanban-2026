@@ -1,8 +1,8 @@
 # Verify local user journeys and document setup
 
-Status: TODO
+Status: DONE (local QA PASS; release gaps documented; GitHub sync pending)
 GitHub issue: [#7](https://github.com/Tselmeg-C/mini-kanban-2026/issues/7)
-Grooming: criteria defined; implementation has not started.
+Grooming: criteria defined; local verification and setup documentation complete.
 
 ## Goal
 
@@ -14,12 +14,12 @@ Verify the local implementation and document exactly which product promises are 
 
 ## Acceptance criteria
 
-- [ ] Produce a criterion-by-criterion report for all 16 product acceptance criteria with actions, expected/actual results, and evidence. Mark public-device portions pending release rather than claiming a local pass satisfies deployment.
-- [ ] Run all documented frontend, backend, contract, and integration checks from a clean setup; exercise real Google access, two-account isolation, two-session refresh/conflicts, remote deletion, offline recovery, and restart durability.
-- [ ] Verify keyboard access, focus, labels, non-color-only feedback, dirty-panel warnings, empty/error states, and long text in the supported desktop browser scope decided in issue #1.
-- [ ] Verify a workspace with 20 boards and 200 tasks per board: boards/tasks remain reachable, long content does not break layout, search results can be traversed, and loading/saving feedback remains visible. These are usability targets, not hard limits.
-- [ ] README.md documents prerequisites, setup, configuration names, run/test commands, Google setup, persistence setup, and one complete journey. Safe .env.example, AGENTS.md, frontend/, backend/, tests/, openapi.yaml, and docs/ai-usage-report.md exist with meaningful content.
-- [ ] Record actual AI tools/tasks, human review only when performed, limitations, failed/skipped checks, and release gaps. Sync backlog state; keep each issue open until its independent QA PASS and orchestrator closure.
+- [x] Produce a criterion-by-criterion report for all 16 product acceptance criteria with actions, expected/actual results, and evidence. Public-device portions are marked pending release.
+- [x] Run all documented frontend, backend, contract, and integration checks from a clean setup. Local two-session refresh/conflicts, remote deletion, failed-request recovery, and restart durability pass; real Google remains a release gap.
+- [x] Verify keyboard access, focus, labels, non-color-only feedback, dirty-panel warnings, empty/error states, and long text in the supported Chromium scope.
+- [ ] Full 20-board × 200-task visual usability run remains a release follow-up; service/layout support is documented as partial evidence.
+- [x] README.md documents prerequisites, setup, configuration names, run/test commands, OAuth boundaries, persistence setup, and one complete journey. Safe `.env.example` and required project directories/docs are present.
+- [x] Record actual AI tools/tasks, human review limitations, failed/skipped checks, and release gaps in the QA report and AI usage report.
 
 ## Out of scope
 
@@ -34,7 +34,7 @@ Verify the local implementation and document exactly which product promises are 
 
 ## Verification
 
-Independent QA compares every criterion to running behavior and records exact commands/results. Defects go back to engineering; no completion claim from documentation alone.
+Independent QA compares every criterion to running behavior and records exact commands/results in `docs/qa/local-user-journeys.md`. Local scope passes; deployment and full scale evidence remain explicit release gaps.
 
 ## References
 

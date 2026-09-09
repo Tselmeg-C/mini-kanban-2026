@@ -81,3 +81,15 @@ backend, and OpenAPI checks all pass; OAuth remains deferred.
   (1), and OpenAPI validation pass.
 - Limitation: sessions remain in memory because authentication is intentionally
   deferred for this local milestone.
+
+## Issue #7 — local user journeys and setup
+
+- Work: ran clean frontend/backend installs, all service/browser/API/contract
+  checks, and documented each of the 16 product criteria with evidence and
+  release gaps. Added `.env.example`, corrected the README, and isolated the
+  API browser test with a disposable SQLite database after QA exposed stale
+  local data affecting repeatability.
+- Validation: `npm ci`, `uv sync`, backend 7 tests, frontend 4 tests, Chromium
+  2 tests, API integration 1 test, and OpenAPI validation pass.
+- Limitations: hosted Google OAuth, physical/public-device evidence, other
+  browsers, and the full 20-by-200 visual scale run remain release follow-ups.
