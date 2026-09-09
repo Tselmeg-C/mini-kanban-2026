@@ -1,6 +1,6 @@
 # Persist boards and tasks in SQLite
 
-Status: DONE (local QA PASS; GitHub sync pending)
+Status: DONE (QA PASS; GitHub issue closed)
 GitHub issue: [#6](https://github.com/Tselmeg-C/mini-kanban-2026/issues/6)
 Grooming: criteria defined; implementation complete and verified locally.
 
