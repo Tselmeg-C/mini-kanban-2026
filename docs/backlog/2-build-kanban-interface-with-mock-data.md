@@ -33,8 +33,8 @@ remain part of issue #7; this local issue is ready for the next dependency.
 ## Independent QA handoff
 
 **PARTIAL (2026-09-09):** current mock lifecycle and Chromium journey pass, but
-full long-content/scale and browser-matrix evidence is missing. See
-`docs/qa/independent-handoff-audit.md`.
+full long-content/scale and browser-matrix evidence is missing. The formal QA
+report is recorded on this issue.
 
 ## Goal
 

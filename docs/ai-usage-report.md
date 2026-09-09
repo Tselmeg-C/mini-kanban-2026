@@ -100,4 +100,4 @@ backend, and OpenAPI checks all pass; OAuth remains deferred.
   modifying implementation, tests, or docs.
 - Verdicts: #1 PARTIAL, #2 PARTIAL, #3 PASS, #4 PASS for approved local scope,
   #5 PARTIAL, #6 PARTIAL, and #7 FAIL. Evidence and reopened issue actions are
-  recorded in `docs/qa/independent-handoff-audit.md`.
+  recorded on the individual issue handoffs.

@@ -41,7 +41,7 @@ Independent QA compares every criterion to running behavior and records exact co
 **FAIL (2026-09-09):** the required 20-board × 200-task visual usability run
 was not performed. Clean setup, browser, API, contract, and documentation
 checks pass, but the issue cannot be closed until that criterion is verified.
-See `docs/qa/independent-handoff-audit.md`.
+The formal QA report is recorded on this issue.
 
 ## References
 

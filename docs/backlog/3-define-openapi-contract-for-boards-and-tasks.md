@@ -17,7 +17,7 @@ Grooming: criteria defined. Contract implementation is complete locally.
 
 **PASS (2026-09-09):** the contract validator reports 18 valid operations and
 the documented operation, security, ownership, validation, conflict, ordering,
-and error mappings are present. See `docs/qa/independent-handoff-audit.md`.
+and error mappings are present. The formal QA report is recorded on this issue.
 
 ## Engineering verification (not QA)
 

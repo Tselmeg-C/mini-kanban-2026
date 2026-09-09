@@ -43,7 +43,7 @@ Run SQLite-backed tests and a real restart-persistence check with a disposable d
 **PARTIAL (2026-09-09):** restart persistence, isolated tests, archive/search,
 ownership, deletion, and sequential stale writes pass. Genuine concurrent writes
 are untested and route check/mutate/persist has no explicit atomic lock or
-conditional database update. See `docs/qa/independent-handoff-audit.md`.
+conditional database update. The formal QA report is recorded on this issue.
 
 ## References
 

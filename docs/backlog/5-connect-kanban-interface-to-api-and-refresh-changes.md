@@ -37,8 +37,8 @@ storage and hosted authentication remain deferred by dependency/scope.
 
 **PARTIAL (2026-09-09):** real client, mock mode, local two-session refresh,
 errors, and integration pass. Polling stops when no board is open, so board-list
-changes are not refreshed there; hosted cross-device evidence is absent. See
-`docs/qa/independent-handoff-audit.md`.
+changes are not refreshed there; hosted cross-device evidence is absent. The
+formal QA report is recorded on this issue.
 
 ## Goal
 

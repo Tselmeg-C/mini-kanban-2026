@@ -35,7 +35,7 @@ account verification are release follow-up work.
 **PASS for approved local scope (2026-09-09):** lifecycle, CSRF, expiry,
 ownership boundary, validation, conflicts, and safe unconfigured OAuth behavior
 pass. Real Google and two external-account checks remain intentionally deferred.
-See `docs/qa/independent-handoff-audit.md`.
+The formal QA report is recorded on this issue.
 
 ## Goal
 
