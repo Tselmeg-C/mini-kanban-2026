@@ -1,6 +1,6 @@
 # Plan cross-device release and hosting
 
-Status: IN PROGRESS (engineering handoff; QA pending)
+Status: DONE (independent QA PASS)
 GitHub issue: [#8](https://github.com/Tselmeg-C/mini-kanban-2026/issues/8)
 Grooming: criteria defined; implementation has not started.
 
@@ -50,6 +50,23 @@ Review the release plan and actual linked follow-up issues against local gaps an
   and 20-board × 200-task gaps to #10's deployed verification criteria.
 - Updated `todo.md` to point to #9 as the next unblocked implementation follow-up
   after this planning issue passes QA.
+
+## QA: PASS
+
+- [x] Deployment requirements and unapproved provider choices — PASS: release
+  plan separates capabilities from unresolved decisions.
+- [x] Hosting, cost, credential, and data-lifecycle decisions — PASS: choices
+  are listed for review; no infrastructure or credentials were changed.
+- [x] Linked synchronized follow-ups — PASS: GitHub #9/#10 and local files have
+  complete goals, criteria, exclusions, constraints, dependencies, and checks.
+- [x] Required two-device, timing, isolation, conflict, failure, and restart
+  criteria — PASS: #10 covers each behavior.
+- [x] Remaining browser, physical-device, network-loss, and scale gaps assigned
+  to #10; deployment/rollback evidence is documented — PASS.
+- [x] Todo identifies #9 next and does not claim deployment acceptance — PASS.
+
+Tests: GitHub #9/#10 body review, local backlog/release-plan review — passed.
+QA did not modify implementation or planning files.
 
 ## References
 
