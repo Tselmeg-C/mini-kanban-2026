@@ -40,7 +40,11 @@ Independent QA compares every criterion to running behavior and records exact co
 
 - Added `npm run test:scale`, which creates 20 boards with 200 tasks each and
   verifies board/task reachability and search at the target size.
-- Focused check: `npm run test:scale` — 1 passed in 0.8 seconds; pending handoff QA.
+- Added `npm run test:scale-browser`, which renders a 20-board/200-task
+  Chromium fixture and checks task reachability and horizontal layout; the
+  service scale test covers real target-size creation and search.
+- Focused checks: `npm run test:scale` — 1 passed in 0.8 seconds;
+  `npm run test:scale-browser` — 1 passed in 1.4 seconds; pending handoff QA.
 
 ## Independent QA handoff
 
