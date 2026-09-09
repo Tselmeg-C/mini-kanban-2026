@@ -44,6 +44,13 @@ Produce a concrete, reviewable plan for the release required by the cross-device
 
 Review the release plan and actual linked follow-up issues against local gaps and the product's cross-device criteria; check each material choice is resolved or explicitly pending.
 
+## Engineering correction handoff
+
+- Assigned the remaining Firefox, Edge, Safari, physical-device, network-loss,
+  and 20-board × 200-task gaps to #10's deployed verification criteria.
+- Updated `todo.md` to point to #9 as the next unblocked implementation follow-up
+  after this planning issue passes QA.
+
 ## References
 
 - `project-spec.md`

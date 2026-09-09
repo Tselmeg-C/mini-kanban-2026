@@ -18,6 +18,8 @@ cross-device product behavior.
 - [ ] Confirmed board/task changes appear on the second device within about five seconds under normal connectivity.
 - [ ] A second account cannot read, search, or mutate the first account's work.
 - [ ] Stale edits, remote deletion, connection failure, retry, and draft preservation behave as specified.
+- [ ] Current desktop Chrome, Firefox, Edge, and Safari are checked, and the
+  20-board × 200-task workspace remains reachable with long content and search.
 - [ ] Browser/device versions, URLs, elapsed timings, backup/restore result, failures, and skipped checks are recorded with one overall QA PASS/FAIL.
 
 ## Out of scope

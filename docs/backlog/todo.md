@@ -5,7 +5,7 @@ Statuses: TODO = not started; IN PROGRESS = active; DONE = independent QA PASS a
 
 PM grooming is complete. Independent QA has now audited each engineering handoff;
 partial and failed findings are reopened for engineering follow-up.
-**NEXT: #8 — QA the cross-device release plan.**
+**NEXT: #8 — Reverify the corrected cross-device release plan.**
 
 - [x] DONE (independent QA PASS) — [#1 Define product assumptions and implementation plan](1-define-product-assumptions-and-implementation-plan.md) · [GitHub](https://github.com/Tselmeg-C/mini-kanban-2026/issues/1)
 - [x] DONE (independent QA PASS) — [#2 Build the kanban interface with mock data](2-build-kanban-interface-with-mock-data.md) · [GitHub](https://github.com/Tselmeg-C/mini-kanban-2026/issues/2) · depends on #1
