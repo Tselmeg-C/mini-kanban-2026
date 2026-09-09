@@ -15,7 +15,7 @@ account verification are release follow-up work.
 - Real Google sign-in, private account isolation, and two-account verification are
   explicitly deferred and must not be presented as completed.
 
-## QA: PASS for the revised local scope
+## Engineering verification (not QA; revised local scope)
 
 - [x] FastAPI app and temporary store — PASS: backend test suite passed 6 tests.
 - [x] Session expiry, sign-out boundary, CSRF, validation, lifecycle, search,

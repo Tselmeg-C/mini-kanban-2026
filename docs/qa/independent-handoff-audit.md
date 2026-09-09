@@ -1,9 +1,9 @@
-# Independent QA handoff audit
+# Retrospective QA correction record
 
-Performed 2026-09-09 by a separate QA pass. QA did not modify implementation,
-tests, or product scope. Prior QA sections in issue files were engineering
-handoff claims; this document records the first independent audit after each
-handoff.
+Performed 2026-09-09 by the single QA engineer to correct the historical record.
+QA did not modify implementation, tests, or product scope. This retrospective
+record is evidence of the correction only; future work must use one formal
+criterion-by-criterion QA report immediately after each engineering handoff.
 
 ## Shared evidence
 

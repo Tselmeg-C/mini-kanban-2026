@@ -15,7 +15,7 @@ Grooming: criteria defined. Frontend implementation is now in progress.
   browser check is incomplete until run outside this sandbox.
 - Independent QA, commit, and GitHub synchronization remain pending.
 
-## QA: PASS
+## Engineering verification (not QA)
 
 - [x] Mock service lifecycle, validation, search, archive, deletion, stale-write,
   and retry behavior — PASS: `npm test` (3 tests passed).

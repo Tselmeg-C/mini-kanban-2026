@@ -12,6 +12,7 @@ Implement or fix one groomed issue at a time.
 6. Run focused checks, then all required handoff checks.
 7. Commit meaningful verified increments.
 8. Leave the issue open and comment with changes, commands, results, and concerns.
+   Engineering verification is handoff evidence, not a QA verdict.
 
 If a criterion is wrong, impossible, or contradictory, report it on the issue instead of silently changing the contract.
 

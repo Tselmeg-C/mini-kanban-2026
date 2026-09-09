@@ -1,48 +1,57 @@
 # Development Process
 
-## Canonical work state
+GitHub Issues are canonical. `docs/backlog/<number>-<slug>.md` mirrors each
+issue, and `docs/backlog/todo.md` identifies the next unblocked item. Process
+one issue at a time in dependency order. Engineering checks are handoff
+evidence; they are never called QA.
 
-- GitHub Issues are the only active backlog.
-- `docs/backlog/<number>-<descriptive-slug>.md` mirrors each issue; it is not a second source of scope. Keep its title, criteria, issue URL, and status synchronized with GitHub.
-- `docs/backlog/todo.md` summarizes TODO, IN PROGRESS, and DONE and highlights the next unblocked issue. An open issue is not DONE; closure still requires QA PASS.
-- Process one open issue at a time, in dependency order unless the user changes priority.
-- Read the entire issue and every linked document before acting.
-- Keep scope changes, implementation evidence, QA findings, and follow-up work on the issue.
-- Commit after meaningful, verified increments and push completed handoffs.
+## Phase 5: Groom one task
 
-## Roles
+The product manager reads the task and linked product documents, rewrites the
+standard sections, resolves only supported ambiguity, makes every criterion
+independently checkable, links excluded follow-ups, and writes no code. Ask the
+user when a missing product decision could materially change behavior.
 
-- Product Manager — grooms one issue according to `docs/team/pm.md`.
-- Software Engineer — implements or fixes one groomed issue according to `docs/team/software-engineer.md`.
-- QA Engineer — independently checks an implementation according to `docs/team/qa-engineer.md`.
-- Orchestrator — coordinates handoffs and task state. Use separate agents only when the user authorizes a multi-agent workflow.
+Grooming is complete only when the goal, dependencies, acceptance criteria,
+out-of-scope items, constraints, verification, and references are complete and
+a new implementer can work from the issue alone.
 
-## Issue lifecycle
+## Phase 6: Implement one groomed task
 
-1. Select the next unblocked open issue.
-2. Product Manager rewrites it with `docs/task-template.md` and creates follow-up issues for moved scope.
-3. The user reviews any material new product decision; otherwise the groomed criteria become the implementation contract.
-4. Software Engineer implements only the groomed issue, adds tests, runs checks, commits the work, and comments with evidence.
-5. QA Engineer independently checks every criterion and posts `PASS` or `FAIL` with test evidence. QA does not modify the implementation.
-6. On `FAIL`, route the QA evidence back to engineering. Engineering fixes the issue, then QA starts a new verification pass.
-7. On `PASS`, the orchestrator closes the issue.
-8. Repeat until the backlog is empty.
+The software engineer reads the complete task, inspects code/tests, implements
+only the groomed scope, adds meaningful edge-case tests, runs focused and full
+checks, records changes/evidence/concerns, commits, pushes when authorized, and
+leaves the issue open. The engineer may report checks, but must not label them
+QA or close the issue.
 
-## Handoff rules
+## Phase 7: Verify independently
 
-- Do not skip grooming.
-- The engineer does not change acceptance criteria or close the issue.
-- QA ignores implementation claims and judges the criteria against actual behavior.
-- QA reports defects without fixing them in the same pass.
-- Only the orchestrator closes an issue, and only after QA reports `PASS`.
-- If a criterion is contradictory or impossible, report the conflict instead of guessing.
-- If work is moved out of scope, create and link a follow-up issue rather than silently dropping it.
+Use exactly one QA engineer after each engineering handoff. QA reads every
+criterion, checks running behavior and code, runs required commands, exercises
+important uncovered cases, changes no implementation or tests, and writes one
+report per issue in this shape:
 
-## Stop conditions
+```markdown
+## QA: PASS | FAIL
 
-Use observable stop conditions:
+- [x] Criterion — PASS
+- [ ] Criterion — FAIL: action taken, expected result, actual result, and evidence
 
-- grooming stops when every template section is complete and each criterion is checkable;
-- implementation stops when all criteria are implemented, relevant tests exist, and the full suite passes;
-- correction stops only when QA reports `PASS`;
-- backlog processing stops when no open issues remain or a genuine blocker needs user input.
+Tests: `<command>` — <result>
+```
+
+`PASS` is allowed only when every criterion passes. A retrospective aggregate
+audit is not a replacement for the per-handoff report.
+
+## Phase 8: Correction loop
+
+`FAIL` returns the exact QA evidence to engineering. Engineering fixes the
+defects and leaves the issue open; the same single QA engineer starts a new
+verification pass. `PASS` allows the orchestrator to close the issue.
+
+## Phase 9: Backlog loop
+
+The orchestrator selects the next open item, runs grooming, sends it to
+engineering, sends that handoff to the one QA engineer, routes failures back to
+engineering, and closes only after QA `PASS`. Stop when no open items remain or
+when a genuine blocker requires user input.

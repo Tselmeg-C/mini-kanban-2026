@@ -30,3 +30,5 @@ Tests: `<command>` — <result>
 - Every failure contains reproducible evidence.
 - Exact test commands and outcomes are included.
 - No implementation or tests were changed during verification.
+- There is one QA report for each engineering handoff; aggregate retrospective
+  audits do not replace those reports.

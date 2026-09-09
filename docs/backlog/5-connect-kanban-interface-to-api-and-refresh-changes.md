@@ -17,7 +17,7 @@ storage and hosted authentication remain deferred by dependency/scope.
   mock, browser, backend, and OpenAPI checks also pass.
 - Independent QA, commit, and GitHub synchronization remain pending.
 
-## QA: PASS for the revised local scope
+## Engineering verification (not QA; revised local scope)
 
 - [x] Selectable real API client and mock preservation — PASS: `?api=1` uses the
   OpenAPI client; default mode remains mock.

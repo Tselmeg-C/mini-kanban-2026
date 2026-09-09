@@ -19,7 +19,7 @@ Grooming: criteria defined. Contract implementation is complete locally.
 the documented operation, security, ownership, validation, conflict, ordering,
 and error mappings are present. See `docs/qa/independent-handoff-audit.md`.
 
-## QA: PASS
+## Engineering verification (not QA)
 
 - [x] Root OpenAPI parses and validates — PASS: `npm run validate:openapi` reports 18 operations.
 - [x] Operation coverage and mapping — PASS: all 18 expected service operations match `docs/openapi-service-mapping.md`.

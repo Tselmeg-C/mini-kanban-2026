@@ -40,7 +40,7 @@ and restore checks. Full browser matrix and scale checks remain issue #7 work.
   operations; documented ownership, unavailable-resource behavior, versions,
   conflicts, refresh timing, and service mapping.
 - Validation: `npm run validate:openapi` passes with 18 operations.
-- QA PASS: operation, security, error, status, and conflict assertions passed.
+- Engineering verification: operation, security, error, status, and conflict assertions passed.
 
 ## Issue #4 — FastAPI backend
 
@@ -56,7 +56,7 @@ Scope update: the user explicitly deferred authentication from this project
 milestone. OAuth setup and private hosted workspaces are now release follow-up
 work rather than a blocker for the local API milestone.
 
-QA PASS for the revised local scope: six backend tests, OpenAPI validation, code
+Engineering verification for the revised local scope: six backend tests, OpenAPI validation, code
 compilation, and Uvicorn startup smoke passed. OAuth remains deferred.
 
 ## Issue #5 — real API client
@@ -68,7 +68,7 @@ compilation, and Uvicorn startup smoke passed. OAuth remains deferred.
   (1), backend tests (6), and OpenAPI validation all pass.
 - Independent QA: pending.
 
-QA PASS for the revised local scope: mock, Chromium, real-client integration,
+Engineering verification for the revised local scope: mock, Chromium, real-client integration,
 backend, and OpenAPI checks all pass; OAuth remains deferred.
 
 ## Issue #6 — SQLite persistence
