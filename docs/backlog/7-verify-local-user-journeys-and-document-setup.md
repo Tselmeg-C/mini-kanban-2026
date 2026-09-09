@@ -1,6 +1,6 @@
 # Verify local user journeys and document setup
 
-Status: IN PROGRESS (independent QA FAIL; reopened)
+Status: IN PROGRESS (engineering correction; QA pending)
 GitHub issue: [#7](https://github.com/Tselmeg-C/mini-kanban-2026/issues/7)
 Grooming: criteria defined; local verification and setup documentation complete.
 
@@ -35,6 +35,12 @@ Verify the local implementation and document exactly which product promises are 
 ## Verification
 
 Independent QA compares every criterion to running behavior and records exact commands/results in `docs/qa/local-user-journeys.md`. Local scope passes; deployment and full scale evidence remain explicit release gaps.
+
+## Engineering correction handoff
+
+- Added `npm run test:scale`, which creates 20 boards with 200 tasks each and
+  verifies board/task reachability and search at the target size.
+- Focused check: `npm run test:scale` — 1 passed in 0.8 seconds; pending handoff QA.
 
 ## Independent QA handoff
 

@@ -13,6 +13,7 @@ npm ci
 npm test
 npm run test:browser
 npm run test:integration
+npm run test:scale
 npm run validate:openapi
 npm start
 ```
