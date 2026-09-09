@@ -22,3 +22,15 @@ test('archive and restore remain visible', { concurrency: false }, async () => {
   await page.locator('[data-archive="b1"]').click(); await waitFor(() => page.locator('[data-board="b1"]').count().then(count => count === 0)); await page.getByRole('button', { name: 'Archived' }).click(); await waitFor(() => page.locator('[data-board="b1"]').count().then(Boolean)); assert.equal(await page.locator('[data-board="b1"]').count(), 1);
   await page.locator('[data-archive="b1"]').click(); await waitFor(() => page.getByRole('button', { name: 'Active' }).count().then(Boolean)); await page.getByRole('button', { name: 'Active' }).click(); await waitFor(() => page.locator('[data-board="b1"]').count().then(Boolean)); assert.equal(await page.locator('[data-board="b1"]').count(), 1);
 });
+
+test('keyboard controls and long content remain reachable', { concurrency: false }, async () => {
+  await page.locator('[data-board="b1"]').click();
+  const title = 'L'.repeat(120); const description = 'Long content '.repeat(350);
+  await page.getByLabel('Task title').fill(title); await page.getByLabel('Description (optional)').fill(description);
+  await page.getByRole('button', { name: 'Create in To Do' }).click(); await waitFor(() => page.getByText(title).count().then(Boolean));
+  const task = page.locator('.task-open').filter({ hasText: title }); await task.focus(); await task.press('Enter');
+  assert.equal(await page.locator('#panel').evaluate(element => element.open), true);
+  await page.getByLabel('Status').selectOption('doing'); await page.getByRole('button', { name: 'Save' }).click();
+  await waitFor(() => page.locator('.column[data-status="doing"] .task-open').filter({ hasText: title }).count().then(Boolean));
+  assert.equal(await page.locator('body').evaluate(element => element.scrollWidth <= document.documentElement.clientWidth), true);
+});

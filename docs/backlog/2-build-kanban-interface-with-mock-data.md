@@ -30,6 +30,13 @@ Grooming: criteria defined. Frontend implementation is now in progress.
 QA passed on 2026-09-09. Broader browser matrix, scale, and full journey evidence
 remain part of issue #7; this local issue is ready for the next dependency.
 
+## Engineering correction handoff
+
+- Added a Chromium check for keyboard task opening, status movement, 120-character
+  titles, 5,000-character descriptions, and horizontal overflow.
+- Fixed task-card title wrapping with `.task-open strong { overflow-wrap: anywhere; }`.
+- Focused check: `npm run test:browser` — 3 passed.
+
 ## Independent QA handoff
 
 **PARTIAL (2026-09-09):** current mock lifecycle and Chromium journey pass, but
