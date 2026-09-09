@@ -18,6 +18,6 @@ partial and failed findings are reopened for engineering follow-up.
 - [ ] TODO — [#9 Release implementation](9-release-implementation.md) · [GitHub](https://github.com/Tselmeg-C/mini-kanban-2026/issues/9) · depends on #8
 - [ ] TODO — [#10 Deployed verification](10-deployed-verification.md) · [GitHub](https://github.com/Tselmeg-C/mini-kanban-2026/issues/10) · depends on #9
 
-Keep issue titles, acceptance criteria, status, and dependencies synchronized after each handoff. No application implementation or QA completion is claimed. Source documents are still local and uncommitted.
+Keep issue titles, acceptance criteria, status, and dependencies synchronized after each handoff. Completed issues include implementation and independent QA evidence in their issue files.
 
 Cross-device release is outstanding. #8 must create linked implementation and deployed-verification follow-ups; its completion alone does not complete the product.

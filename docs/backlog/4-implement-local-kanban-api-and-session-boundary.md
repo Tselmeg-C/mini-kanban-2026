@@ -27,7 +27,7 @@ authentication scope.
 - [x] Code checks — PASS: `python -m compileall -q app tests` and `git diff --check`.
 - [x] Authentication scope — PASS: external authentication is excluded; the
   local development session is explicit and no provider credentials exist.
-- Independent QA, commit, and GitHub synchronization remain pending.
+- Independent QA passed; the issue, commit, and GitHub synchronization are complete.
 
 ## Engineering correction handoff
 
