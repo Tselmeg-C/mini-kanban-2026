@@ -1,6 +1,6 @@
 # Build the kanban interface with mock data
 
-Status: IN PROGRESS (independent QA PARTIAL; reopened)
+Status: DONE (independent QA PASS)
 GitHub issue: [#2](https://github.com/Tselmeg-C/mini-kanban-2026/issues/2)
 Grooming: criteria defined. Frontend implementation is now in progress.
 
@@ -37,11 +37,30 @@ remain part of issue #7; this local issue is ready for the next dependency.
 - Fixed task-card title wrapping with `.task-open strong { overflow-wrap: anywhere; }`.
 - Focused check: `npm run test:browser` — 3 passed.
 
-## Independent QA handoff
+## QA: PASS
 
-**PARTIAL (2026-09-09):** current mock lifecycle and Chromium journey pass, but
-full long-content/scale and browser-matrix evidence is missing. The formal QA
-report is recorded on this issue.
+- [x] Selectable mock service and no component HTTP calls — PASS: `app.js`
+  selects the service and HTTP is isolated in `api-service.js`.
+- [x] Mock session, board lifecycle, recency, archive, restore, and archived
+  task actions — PASS: source review and Chromium archive journey.
+- [x] Fixed columns, title-only creation, optional description, and validation —
+  PASS: service validation and browser create flow.
+- [x] Task panel save/cancel/delete, dirty-discard, and failed-save draft — PASS:
+  UI handlers and service tests.
+- [x] Drag/status movement, failure recovery, and creation ordering — PASS:
+  browser/service movement and retry checks.
+- [x] Delete confirmation and search across archived boards — PASS: browser and
+  service search/archive checks.
+- [x] Loading, empty, saving, validation, unavailable, expired, failure,
+  conflict, deletion, and draft states — PASS: explicit error states and tests.
+- [x] Automated behavior, keyboard access, labels, focus, text feedback, and
+  long-content layout — PASS: Chromium verifies keyboard opening, 120-character
+  titles, 5,000-character descriptions, status movement, and no overflow.
+
+Tests: `npm test` — 4 passed.
+Tests: `npm run test:browser` — 3 passed.
+Tests: `node --check app.js && node --check service.js && git diff --check` — passed.
+QA did not modify implementation or test files.
 
 ## Goal
 

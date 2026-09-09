@@ -5,10 +5,10 @@ Statuses: TODO = not started; IN PROGRESS = active; DONE = independent QA PASS a
 
 PM grooming is complete. Independent QA has now audited each engineering handoff;
 partial and failed findings are reopened for engineering follow-up.
-**NEXT: #2 — Resolve mock frontend QA findings.**
+**NEXT: #5 — Resolve API client refresh QA findings.**
 
 - [x] DONE (independent QA PASS) — [#1 Define product assumptions and implementation plan](1-define-product-assumptions-and-implementation-plan.md) · [GitHub](https://github.com/Tselmeg-C/mini-kanban-2026/issues/1)
-- [ ] IN PROGRESS (independent QA PARTIAL) — [#2 Build the kanban interface with mock data](2-build-kanban-interface-with-mock-data.md) · [GitHub](https://github.com/Tselmeg-C/mini-kanban-2026/issues/2) · depends on #1
+- [x] DONE (independent QA PASS) — [#2 Build the kanban interface with mock data](2-build-kanban-interface-with-mock-data.md) · [GitHub](https://github.com/Tselmeg-C/mini-kanban-2026/issues/2) · depends on #1
 - [x] DONE (independent QA PASS) — [#3 Define the OpenAPI contract for boards and tasks](3-define-openapi-contract-for-boards-and-tasks.md) · [GitHub](https://github.com/Tselmeg-C/mini-kanban-2026/issues/3) · depends on #2
 - [x] DONE (independent QA PASS; authentication deferred) — [#4 Implement the private kanban API and Google sign-in](4-implement-private-kanban-api-and-google-sign-in.md) · [GitHub](https://github.com/Tselmeg-C/mini-kanban-2026/issues/4) · depends on #3
 - [ ] IN PROGRESS (independent QA PARTIAL) — [#5 Connect the kanban interface to the API and refresh changes](5-connect-kanban-interface-to-api-and-refresh-changes.md) · [GitHub](https://github.com/Tselmeg-C/mini-kanban-2026/issues/5) · depends on #4
