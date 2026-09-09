@@ -1,6 +1,6 @@
 # Verify local user journeys and document setup
 
-Status: IN PROGRESS (engineering correction; QA pending)
+Status: DONE (independent QA PASS)
 GitHub issue: [#7](https://github.com/Tselmeg-C/mini-kanban-2026/issues/7)
 Grooming: criteria defined; local verification and setup documentation complete.
 
@@ -46,12 +46,24 @@ Independent QA compares every criterion to running behavior and records exact co
 - Focused checks: `npm run test:scale` — 1 passed in 0.8 seconds;
   `npm run test:scale-browser` — 1 passed in 1.4 seconds; pending handoff QA.
 
-## Independent QA handoff
+## QA: PASS
 
-**FAIL (2026-09-09):** the required 20-board × 200-task visual usability run
-was not performed. Clean setup, browser, API, contract, and documentation
-checks pass, but the issue cannot be closed until that criterion is verified.
-The formal QA report is recorded on this issue.
+- [x] Criterion-by-criterion report for all 16 product criteria — PASS:
+  `docs/qa/local-user-journeys.md` records local results and release gaps.
+- [x] Clean frontend/backend/contract/integration checks — PASS: prior handoff
+  evidence plus target-size checks.
+- [x] Keyboard, focus, labels, non-color feedback, dirty panels, empty/error
+  states, and long text in Chromium — PASS.
+- [x] 20-board × 200-task visual target — PASS: rendered Chromium fixture showed
+  20 boards, 200 reachable tasks, long content, and no horizontal overflow; the
+  service test covered target-size creation and search.
+- [x] README, `.env.example`, setup/configuration/commands, OAuth boundaries,
+  persistence, and complete journey — PASS.
+- [x] AI usage, limitations, failed/skipped checks, and release gaps — PASS.
+
+Tests: `npm run test:scale` — 1 passed.
+Tests: `npm run test:scale-browser` — 1 passed.
+QA did not modify implementation or tests.
 
 ## References
 
