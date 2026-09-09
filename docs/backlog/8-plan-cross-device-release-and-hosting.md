@@ -14,10 +14,10 @@ Produce a concrete, reviewable plan for the release required by the cross-device
 
 ## Acceptance criteria
 
-- [ ] Document deployment requirements for public secure access, Google sign-in redirect configuration, private sessions, persistent storage, and recovery, distinguishing requirements from unapproved provider choices.
-- [ ] Identify material hosting, cost, credential, and data-lifecycle decisions for user review. Do not provision infrastructure, change external OAuth settings, or select paid services by assumption.
+- [ ] Document deployment requirements for public secure access, the approved session boundary, persistent storage, and recovery, distinguishing requirements from unapproved provider choices.
+- [ ] Identify material hosting, cost, credential, and data-lifecycle decisions for user review. Do not provision infrastructure, add external authentication, or select paid services by assumption.
 - [ ] Create and link concrete GitHub follow-up issues for release implementation and independent deployed verification. Each has goal, checkable criteria, exclusions, constraints, dependencies, and a synchronized local backlog file.
-- [ ] Follow-up criteria cover the same Google account accessing saved work on two actual devices, updates within about five seconds under normal connectivity, cross-account isolation, conflict/draft behavior, connection failure, and persistence across service restarts.
+- [ ] Follow-up criteria cover the approved session design accessing saved work on two actual devices, updates within about five seconds under normal connectivity, conflict/draft behavior, connection failure, and persistence across service restarts. Public account isolation is outside this project.
 - [ ] Assign every remaining deployed requirement from the local verification report to a follow-up issue, and document deployment/setup/rollback evidence needed for a release decision.
 - [ ] Update todo.md to identify the next unblocked follow-up. Closing this planning issue must not mark deployment or cross-device product acceptance complete.
 
@@ -38,7 +38,7 @@ Produce a concrete, reviewable plan for the release required by the cross-device
   deployed evidence, and rollback boundaries.
 - Created linked follow-ups #9 (release implementation) and #10 (deployed
   verification), each with checkable criteria and synchronized local files.
-- No infrastructure, OAuth settings, paid provider, or credentials were changed.
+- No infrastructure, external authentication, paid provider, or credentials were changed.
 
 ## Verification
 

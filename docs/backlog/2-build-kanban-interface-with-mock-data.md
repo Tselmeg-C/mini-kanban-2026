@@ -73,7 +73,7 @@ Make the complete product workflow usable and testable without a backend.
 ## Acceptance criteria
 
 - [ ] frontend/ runs through documented commands without a backend. All data/actions go through one selectable service interface with representative mock data; components make no direct HTTP calls.
-- [ ] Show a simulated Google entry/session flow, empty workspace, multiple named boards, recently opened ordering, rename, separate active/archive views, and archive/restore. Archived boards retain their label and all task actions remain usable.
+- [ ] Show a simulated local session flow, empty workspace, multiple named boards, recently opened ordering, rename, separate active/archive views, and archive/restore. Archived boards retain their label and all task actions remain usable.
 - [ ] Every board has exactly To Do, In Progress, Done. Title-only creation starts in To Do; description is optional. Validate the planning issue's field rules and reject blank titles without losing input.
 - [ ] Task selection opens a side panel with title, description, status, Save, Cancel, Delete. Save commits, Cancel discards, and leaving a dirty panel requires a discard decision; failed saves preserve the draft.
 - [ ] Support immediate drag-to-column moves and status changes committed by Save, including moves out of Done. Failed moves restore confirmed state; task order stays creation-based and within-column dragging does not reorder.
@@ -83,7 +83,7 @@ Make the complete product workflow usable and testable without a backend.
 
 ## Out of scope
 
-- Real Google authentication, real API calls, and durable storage.
+- External authentication, real API calls, and durable storage.
 - Real cross-session refresh is issue #5; full scale/browser verification is issue #7.
 
 ## Constraints

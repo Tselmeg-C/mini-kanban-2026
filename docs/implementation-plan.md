@@ -29,9 +29,9 @@ Authentication is deferred from this local milestone by explicit user decision.
 The mock identity remains for frontend workflows and makes no security claim.
 Material release choices remain **unresolved for user review in #8**: public
 origin, hosting provider/cost, production storage, backup/retention/recovery, and
-production Google OAuth configuration. These block release implementation, not
-local mock UI work. Do not start a phase if a newly discovered material product
-or security choice needed by that phase is unresolved.
+External authentication and public cross-device identity are outside this
+project. The local mock identity and explicit session boundary are the complete
+authentication scope; no OAuth provider or identity migration is planned.
 
 ## Implementation boundaries
 
@@ -43,19 +43,14 @@ or security choice needed by that phase is unresolved.
    Keep saved records separate from editable drafts. Select a small frontend
    toolchain during #2; no UI library is required by this plan.
 2. **Contract (#3).** Root `openapi.yaml` maps every service operation, including
-   Google entry/callback and sign-out, to explicit schemas, validation, statuses,
+   the local development session and sign-out, to explicit schemas, validation, statuses,
    errors, and authentication. Record enum wire values and version preconditions
    here before backend coding. Preserve the mock when adding the real client.
-3. **Authentication and ownership (#4).** Use FastAPI with an established OIDC
-   library for Google's authorization-code flow; validate state, nonce, PKCE,
-   issuer, audience, expiry, and registered redirect handling. Identify accounts
-   by verified issuer/subject, not user-submitted email or owner IDs. Use opaque,
-   server-managed sessions in HttpOnly, SameSite cookies, Secure on HTTPS;
-   invalidate on logout and expiry. Permit HTTP only for loopback development.
-   Check CSRF tokens and allowed origins for cookie-authenticated mutations;
-   restrict credentialed CORS to configured frontend origins. Never put provider
-   tokens in browser storage or logs. Session expiry retains drafts without
-   exposing one account's draft/data to a different signed-in account.
+3. **Local session and ownership (#4).** Use FastAPI with an explicit
+   development-only session endpoint gated by `AUTH_DISABLED=1`. Keep opaque,
+   server-managed HttpOnly, SameSite cookies, CSRF checks, expiry, sign-out, and
+   configured CORS for local API behavior. No external identity provider,
+   provider token, OAuth redirect, or hosted account claim exists in this scope.
 4. **Temporary then durable store (#4, #6).** Start with a single-process in-memory
    store behind only the operations the routes need. Apply ownership checks to
    all reads and mutations, including search and nested IDs. Missing and foreign
@@ -85,21 +80,9 @@ or security choice needed by that phase is unresolved.
 
 ## Prerequisites and evidence boundaries
 
-Configuration names planned for implementation: `GOOGLE_CLIENT_ID`,
-`GOOGLE_CLIENT_SECRET`, `GOOGLE_REDIRECT_URI`, `FRONTEND_ORIGIN`, `API_BASE_URL`,
-`DATABASE_URL`, and a frontend mock/API mode setting. Final names and safe
-placeholders belong in `.env.example` and README when implemented. No credentials
-are needed for #1–#3; no secret values are inspected or supplied by this plan.
-
-#4 needs an authorized Google OAuth web client, consent/test-user configuration
-where applicable, a registered loopback callback, and two authorized test
-accounts. Actual setup or changes to external OAuth settings require user
-authorization. Use a reviewed library's required configuration and document
-session lifetime before implementation; no long-lived provider access is needed.
-
-Mock identity and mocked OIDC tests prove local behavior only. #4 must separately
-record real Google sign-in/out and denied/invalid flows; missing configuration
-keeps that criterion incomplete. #5 uses two local browser sessions for timing
+Configuration names: `AUTH_DISABLED`, `FRONTEND_ORIGIN`, `API_BASE_URL`,
+`DATABASE_PATH`, and a frontend mock/API mode setting. No provider credentials
+or OAuth setup exists. #5 uses two local browser sessions for timing
 and concurrency. #6 uses a disposable SQLite database for restart evidence.
 #7 needs access to the four supported desktop browsers. #8 and its future linked
 release issues need an authorized public HTTPS environment and two actual
@@ -113,7 +96,7 @@ All rows require final local evidence in #7. Release follow-ups do not exist yet
 
 | Product criterion | Implementation issues | Verification and expected evidence |
 | --- | --- | --- |
-| 1 Google/private multi-board workspace | #2, #3, #4, #5, #6 | #4 two-account isolation and real Google; #7 local journey; #8 follow-ups actual devices |
+| 1 Local multi-board workspace | #2, #3, #4, #5, #6 | #7 local journey; public identity and cross-account access are outside scope |
 | 2 Board recency/rename | #2, #3, #4, #5, #6 | #2 mock order; #4 endpoint checks; #6 persisted recency; #7 journey |
 | 3 Fixed columns | #2, #3, #4 | #2 UI; #4 reject invalid statuses; #7 exactly three columns |
 | 4 Create/validate/cancel | #2, #3, #4, #5, #6 | #2 drafts/cancel; #4 boundary cases; #6 persistence; #7 title-only creation |
@@ -137,7 +120,7 @@ All rows require final local evidence in #7. Release follow-ups do not exist yet
 | #1 / none | Seven assumption dispositions, reconciled instructions, all 16 mapped criteria, explicit prerequisites and unresolved release choices; independent documentation QA PASS and closure. |
 | #2 / #1 | Runnable frontend with mock service, reproducible visible/error states, tests and manual keyboard/core journeys; documented commands. |
 | #3 / #2 | Validated OpenAPI, complete service-operation mapping, ownership/version/error examples, frontend/backend contract review. |
-| #4 / #3 | Running FastAPI with temporary store; endpoint/contract/security checks and separately recorded real Google/two-account evidence. Missing credentials block completion. |
+| #4 / #3 | Running FastAPI with local session boundary; endpoint, contract, CSRF, expiry, ownership, and security checks. No external identity evidence applies. |
 | #5 / #4 | Mock and API clients both usable; full relevant suites, real local journeys, measured two-session refresh, conflicts, deletion, offline retry. |
 | #6 / #5 | Same API against SQLite; isolated lifecycle/isolation/concurrency tests; repeatable setup and actual restart persistence. |
 | #7 / #6 | Clean-setup checks, all 16 criterion outcomes, browser/scale evidence, README, safe configuration examples, stable AGENTS commands, maintained frontend/backend/tests, OpenAPI and AI report. Public-device portions explicitly pending. |

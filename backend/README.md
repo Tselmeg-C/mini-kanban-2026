@@ -12,9 +12,9 @@ uv run uvicorn app.main:app --reload
 uv run python -m unittest discover -s tests -v
 ```
 
-Google authentication is deferred from this project milestone. The login and
-callback endpoints remain safe unconfigured stubs; no credentials are needed or
-included.
+External authentication is outside this project. Local development uses the
+explicit `AUTH_DISABLED=1` session endpoint; no provider credentials or hosted
+identity setup are needed.
 
 For the local real-client walkthrough, run `AUTH_DISABLED=1 uv run uvicorn
 app.main:app --reload`, then open `http://localhost:4173/?api=1`. The development

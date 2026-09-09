@@ -1,19 +1,19 @@
-# Implement the private kanban API and Google sign-in
+# Implement the local kanban API and session boundary
 
-Status: DONE (independent QA PASS for approved local scope; authentication deferred)
+Status: IN PROGRESS (scope correction; QA pending)
 GitHub issue: [#4](https://github.com/Tselmeg-C/mini-kanban-2026/issues/4)
-Grooming: criteria defined. The user explicitly deferred authentication from this
-project milestone; real Google OAuth, private hosted workspaces, and external
-account verification are release follow-up work.
+Grooming: criteria defined. The user removed Google OAuth and all external
+authentication from the project design; local mock sessions are the complete
+authentication scope.
 
 ## Local engineering handoff
 
 - `backend/` contains the FastAPI app, temporary in-memory store, lifecycle
   routes, search, and version conflicts. Session/authentication work is deferred.
 - `uv run python -m unittest discover -s tests -v` passes 6 endpoint tests.
-- `npm run validate:openapi` passes the root contract with 18 operations.
-- Real Google sign-in, private account isolation, and two-account verification are
-  explicitly deferred and must not be presented as completed.
+- `npm run validate:openapi` passes the root contract with 17 operations.
+- External sign-in, hosted privacy, and public account isolation are outside the
+  project and must not be presented as completed.
 
 ## Engineering verification (not QA; revised local scope)
 
@@ -22,19 +22,28 @@ account verification are release follow-up work.
   and stale-write behavior — PASS: `uv run python -m unittest discover -s tests -v`.
 - [x] Ownership behavior within the explicit test-session boundary — PASS: foreign
   board/task reads and search return unavailable/empty results.
-- [x] Contract and startup — PASS: `npm run validate:openapi` reports 18 operations;
+- [x] Contract and startup — PASS: `npm run validate:openapi` reports 17 operations;
   `/openapi.json` returned HTTP 200 from Uvicorn.
 - [x] Code checks — PASS: `python -m compileall -q app tests` and `git diff --check`.
-- [x] Authentication scope — PASS: Google OAuth is explicitly deferred by user
-  decision; unconfigured callback behavior is safe and no OAuth completion claim
-  is made.
+- [x] Authentication scope — PASS: external authentication is excluded; the
+  local development session is explicit and no provider credentials exist.
 - Independent QA, commit, and GitHub synchronization remain pending.
 
 ## Independent QA handoff
 
-**PASS for approved local scope (2026-09-09):** lifecycle, CSRF, expiry,
-ownership boundary, validation, conflicts, and safe unconfigured OAuth behavior
-pass. Real Google and two external-account checks remain intentionally deferred.
+## Engineering correction handoff
+
+- Removed external authentication and Google/OAuth routes, schemas, tests, UI
+  wording, environment placeholders, and release references.
+- Kept only the explicit `AUTH_DISABLED=1` local session boundary.
+- Updated the contract to 17 operations and synchronized GitHub issue bodies.
+- Checks: backend 8 tests, frontend 4 tests, browser 3 tests, integration 1
+  test, and OpenAPI validation with 17 operations all pass.
+
+## Independent QA handoff
+
+**PASS (2026-09-09):** lifecycle, CSRF, expiry, local ownership boundary,
+validation, and conflicts pass. External authentication is outside scope.
 The formal QA report is recorded on this issue.
 
 ## Goal
@@ -48,18 +57,18 @@ Implement the contract with a tested private workspace and temporary state.
 ## Acceptance criteria
 
 - [ ] backend/ implements openapi.yaml with FastAPI and an explicitly temporary in-memory store. Document local run/test commands and explicit seed setup; never automatically inject development users into real authentication.
-- [ ] Implement Google sign-in, current-session, expiry, and sign-out. Test denied/invalid callback and invalid/expired session behavior; unsuccessful authentication grants no workspace access. Use the security protections required by the selected flow.
+- [ ] Implement the local development session, current-session, expiry, and sign-out. Test invalid/expired session behavior; an absent or expired session grants no workspace access.
 - [ ] Derive ownership from authenticated identity and enforce it on every board/task operation, search, and direct-ID access. Two-account tests prove foreign data cannot be read, modified, moved, or deleted.
 - [ ] Implement board creation/rename/open-recency/archive/restore, fixed columns, title-only To Do task creation, editing, all status transitions, permanent deletion, and title/description search including archived results.
 - [ ] Reject invalid fields/statuses and ownership or board reassignment. Preserve creation ordering and distinguish unavailable records without leaking foreign content; archived boards allow all task operations.
 - [ ] Atomically reject stale task mutations using the contract's precondition. Tests show a stale save/move cannot overwrite a newer task and a deleted task cannot be recreated through update.
-- [ ] Endpoint tests cover documented response schemas/statuses, lifecycle, empty results, validation, session failure, isolation, and conflicts. Record actual Google sign-in verification separately from simulated automated tests; missing configuration remains an explicit incomplete criterion.
+- [ ] Endpoint tests cover documented response schemas/statuses, lifecycle, empty results, validation, session failure, isolation, and conflicts. No external authentication verification is required.
 
 ## Out of scope
 
-- Google authentication, private account isolation, SQLite persistence, real
-  frontend integration, or hosting. Authentication and privacy belong to a
-  future release follow-up.
+- External authentication, hosted privacy, SQLite persistence, real frontend
+  integration, or hosting. Public identity and account isolation are outside
+  this project.
 - Those belong to issues #6, #5, and #8 respectively.
 
 ## Constraints
@@ -70,7 +79,9 @@ Implement the contract with a tested private workspace and temporary state.
 
 ## Verification
 
-Run backend and contract checks. Exercise Google sign-in/sign-out using authorized configuration and two accounts; report external checks blocked by missing credentials honestly.
+Run backend and contract checks. Exercise local session sign-in/sign-out,
+expiry, CSRF, ownership boundaries, and conflicts. No external credentials are
+needed.
 
 ## References
 

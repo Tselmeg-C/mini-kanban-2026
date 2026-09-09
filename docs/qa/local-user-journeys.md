@@ -1,8 +1,8 @@
 # Issue #7 local QA report
 
 Scope: local development on 2026-09-09. The supported browser checks use
-headless Chromium available through Playwright. Hosted Google authentication,
-public-device behavior, and release hosting remain pending issue #8 follow-ups.
+headless Chromium available through Playwright. External authentication,
+public-device behavior, and release hosting are outside this project.
 
 ## Checks
 
@@ -13,12 +13,12 @@ public-device behavior, and release hosting remain pending issue #8 follow-ups.
 | Frontend service tests | `cd frontend && npm test` | PASS; 4 tests |
 | Browser mock journey | `cd frontend && npm run test:browser` | PASS; 2 Chromium tests |
 | API browser journey | `cd frontend && npm run test:integration` | PASS; disposable SQLite, two sessions, refresh visibility |
-| Contract | `cd frontend && npm run validate:openapi` | PASS; 18 operations |
+| Contract | `cd frontend && npm run validate:openapi` | PASS; 17 operations |
 
 ## Product criteria
 
-1. **PASS local scope:** mock sign-in, two boards, and separate task lists. Real
-   Google and hosted privacy are deferred by `project-spec.md`.
+1. **PASS local scope:** local mock session, two boards, and separate task lists.
+   External authentication and hosted privacy are outside `project-spec.md`.
 2. **PASS:** board open order and rename behavior are covered by service and API
    lifecycle checks.
 3. **PASS:** the UI renders only To Do, In Progress, and Done columns.
@@ -45,7 +45,7 @@ public-device behavior, and release hosting remain pending issue #8 follow-ups.
 
 ## Release gaps
 
-- Google OAuth, real account isolation, and cross-device access need hosted
-  credentials and deployment evidence.
+- External authentication, real account isolation, and cross-device access are
+  outside this project scope.
 - Firefox, Edge, Safari, physical-device, network-loss, and full scale visual
   checks are not claimed from this local Chromium run.

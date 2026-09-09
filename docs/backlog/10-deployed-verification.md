@@ -14,7 +14,7 @@ cross-device product behavior.
 
 ## Acceptance criteria
 
-- [ ] The same Google account accesses saved work on two actual devices and service restart preserves it.
+- [ ] The approved local identity/session design accesses saved work on two actual devices and service restart preserves it; no Google/OAuth flow is assumed.
 - [ ] Confirmed board/task changes appear on the second device within about five seconds under normal connectivity.
 - [ ] A second account cannot read, search, or mutate the first account's work.
 - [ ] Stale edits, remote deletion, connection failure, retry, and draft preservation behave as specified.
@@ -29,7 +29,7 @@ cross-device product behavior.
 
 ## Constraints
 
-- Use real deployed HTTPS and authorized test accounts without exposing credentials.
+- Use real deployed HTTPS and approved test identities without exposing credentials.
 - QA does not modify implementation; failures return to #9.
 
 ## Verification

@@ -10,7 +10,7 @@ storage and hosted authentication remain deferred by dependency/scope.
 - `frontend/api-service.js` implements the OpenAPI client; `?api=1` selects it,
   while mock mode remains the default.
 - `AUTH_DISABLED=1` enables the explicit local development session endpoint;
-  OAuth remains deferred and no hosted privacy claim is made.
+  external authentication is outside this project and no hosted privacy claim is made.
 - Visible board/task state polls every three seconds without replacing an open
   draft. API errors, conflicts, and remote deletion retain the existing UI flow.
 - `npm run test:integration` passes the real frontend client against Uvicorn;
@@ -29,9 +29,9 @@ storage and hosted authentication remain deferred by dependency/scope.
   failed requests, stale writes, dirty drafts, deletion, and retry behavior.
 - [x] Contract and regression checks — PASS: frontend (4), mock browser (2),
   integration browser (1), backend (6), and OpenAPI validation all pass.
-- [x] Authentication scope — PASS: Google OAuth remains deferred by explicit user
-  decision; local integration uses the explicit `AUTH_DISABLED=1` development
-  session and makes no hosted privacy claim.
+- [x] Authentication scope — PASS: external authentication is excluded; local
+  integration uses the explicit `AUTH_DISABLED=1` development session and makes
+  no hosted privacy claim.
 
 ## Engineering correction handoff
 
@@ -65,7 +65,7 @@ Complete local user journeys against the real API with refresh and safe conflict
 
 ## Dependencies
 
-- [#4 — Implement the private kanban API and Google sign-in](https://github.com/Tselmeg-C/mini-kanban-2026/issues/4)
+- [#4 — Implement the local kanban API and session boundary](https://github.com/Tselmeg-C/mini-kanban-2026/issues/4)
 
 ## Acceptance criteria
 

@@ -8,7 +8,7 @@ before(async () => { server = spawn('python3', ['-m', 'http.server', '4173'], { 
 after(async () => { await browser?.close(); server?.kill(); });
 
 test('rendered layout remains reachable at the 20-board by 200-task target', { concurrency: false }, async () => {
-  await page.getByRole('button', { name: /Continue with Google/ }).click();
+  await page.getByRole('button', { name: /Continue with local session/ }).click();
   await page.evaluate(() => {
     const boards = document.querySelector('#boards');
     boards.innerHTML = Array.from({ length: 20 }, (_, index) => `<li><button class="board-link">Scale board ${index}</button></li>`).join('');

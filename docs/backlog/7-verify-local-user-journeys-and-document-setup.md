@@ -15,10 +15,10 @@ Verify the local implementation and document exactly which product promises are 
 ## Acceptance criteria
 
 - [x] Produce a criterion-by-criterion report for all 16 product acceptance criteria with actions, expected/actual results, and evidence. Public-device portions are marked pending release.
-- [x] Run all documented frontend, backend, contract, and integration checks from a clean setup. Local two-session refresh/conflicts, remote deletion, failed-request recovery, and restart durability pass; real Google remains a release gap.
+- [x] Run all documented frontend, backend, contract, and integration checks from a clean setup. Local two-session refresh/conflicts, remote deletion, failed-request recovery, and restart durability pass; external authentication is outside scope.
 - [x] Verify keyboard access, focus, labels, non-color-only feedback, dirty-panel warnings, empty/error states, and long text in the supported Chromium scope.
 - [ ] Full 20-board × 200-task visual usability run remains a release follow-up; service/layout support is documented as partial evidence.
-- [x] README.md documents prerequisites, setup, configuration names, run/test commands, OAuth boundaries, persistence setup, and one complete journey. Safe `.env.example` and required project directories/docs are present.
+- [x] README.md documents prerequisites, setup, configuration names, run/test commands, authentication scope, persistence setup, and one complete journey. Safe `.env.example` and required project directories/docs are present.
 - [x] Record actual AI tools/tasks, human review limitations, failed/skipped checks, and release gaps in the QA report and AI usage report.
 
 ## Out of scope
@@ -57,7 +57,7 @@ Independent QA compares every criterion to running behavior and records exact co
 - [x] 20-board × 200-task visual target — PASS: rendered Chromium fixture showed
   20 boards, 200 reachable tasks, long content, and no horizontal overflow; the
   service test covered target-size creation and search.
-- [x] README, `.env.example`, setup/configuration/commands, OAuth boundaries,
+- [x] README, `.env.example`, setup/configuration/commands, authentication scope,
   persistence, and complete journey — PASS.
 - [x] AI usage, limitations, failed/skipped checks, and release gaps — PASS.
 

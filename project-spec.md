@@ -3,20 +3,20 @@
 ## Purpose and audience
 
 TidyBoard helps individuals organize personal work across multiple projects.
-Each project has its own board. The first release is a desktop-first, online
-tool that people can access across devices using their Google account.
+Each project has its own board. This project is a local, desktop-first online
+workspace using an explicit development mock identity.
 
-The eventual hosted release may use Google sign-in, but authentication is
-deferred from this local project milestone. Local work uses a development-only
-mock identity and makes no privacy or account-isolation claim.
+Google OAuth and external identity providers are removed from the product
+design. This project makes no hosted privacy, account-isolation, or public
+cross-device authentication claim.
 
 This document defines product behavior only. The decisions below were agreed
 during scope discussions; remaining minor assumptions are identified separately.
 
 ## First-release scope
 
-- Development-only mock sign-in for local workflows. Google sign-in and private
-  hosted workspaces are deferred release work.
+- Development-only mock sign-in for local workflows. Hosted authentication and
+  public cross-device workspaces are outside this project.
 - Multiple named boards, ordered by most recently opened.
 - Three fixed columns on every board: To Do, In Progress, and Done.
 - Tasks with a required title and optional description.
@@ -34,9 +34,9 @@ during scope discussions; remaining minor assumptions are identified separately.
 
 ### Sign in and access private work
 
-A visitor signs in with Google and enters their workspace. A new account starts
-with no boards and a clear Create board action. Returning users see their saved
-boards. Signing in on another device opens the same workspace.
+A local user enters through the development mock session and sees a clear Create
+board action. Returning local sessions can reopen the same configured SQLite
+workspace; public multi-account access is outside this project.
 
 People can sign out. A person must never be able to read, search, or change
 another person's boards or tasks, including by opening a direct link.
@@ -154,8 +154,8 @@ first release. Tasks cannot be moved between boards.
 ## Acceptance criteria
 
 1. A local user can enter through the mock sign-in, create two boards, and
-   maintain separate task lists on them. Google authentication and cross-account
-   privacy are deferred to release work and are not accepted by this milestone.
+   maintain separate task lists on them. External authentication, public
+   cross-account privacy, and hosted access are outside this project.
 2. Opening a board puts it first in the recently opened active-board list.
    Renaming a board preserves its tasks.
 3. Every board has exactly To Do, In Progress, and Done; users cannot add,
@@ -226,4 +226,4 @@ These minor defaults were not explicitly selected during brainstorming:
   draft recovery after browser closure.
 - Instant live collaboration; the agreed update interval is about five seconds.
 - Native mobile apps and a polished mobile-first experience.
-- Google authentication, other login methods, imports, exports, and third-party integrations.
+- External authentication, imports, exports, and third-party integrations.

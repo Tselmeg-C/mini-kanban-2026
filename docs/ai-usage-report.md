@@ -1,5 +1,13 @@
 # AI usage report
 
+## Current scope decision
+
+The user removed Google OAuth and all external authentication from the design.
+The project uses an explicit local development session only; no provider
+credentials, OAuth routes, redirects, or hosted identity claims remain in the
+active scope. Earlier issue notes that mention Google describe superseded
+planning history.
+
 ## Issue #1 — product assumptions and implementation plan
 
 - Tool: Codex; Ponytail skill used to keep the planning change focused.
@@ -12,7 +20,7 @@
 - No subagents, application implementation, credential inspection, or cloud setup.
 - Human review: not yet performed on these changes.
 - Independent QA: pending; engineering review is not a QA PASS.
-- Limitations: no running app exists. Real Google authentication, browser tests,
+- Limitations: no running app exists. External authentication, browser tests,
   persistence, and physical cross-device evidence belong to later issues.
 
 ## Issue #2 — mock frontend
@@ -39,25 +47,25 @@ and restore checks. Full browser matrix and scale checks remain issue #7 work.
 - Work: defined `openapi.yaml` for session, board, task, status, and search
   operations; documented ownership, unavailable-resource behavior, versions,
   conflicts, refresh timing, and service mapping.
-- Validation: `npm run validate:openapi` passes with 18 operations.
+- Validation: `npm run validate:openapi` passes with 17 operations.
 - Engineering verification: operation, security, error, status, and conflict assertions passed.
 
 ## Issue #4 — FastAPI backend
 
 - Work: added a temporary in-memory FastAPI API with opaque sessions, CSRF
   protection, ownership isolation, board/task lifecycle, search, validation,
-  version conflicts, and safe unconfigured Google OAuth endpoints.
+  version conflicts, and explicit local session boundaries.
 - Validation: `uv run python -m unittest discover -s tests -v` passes 6 tests;
   OpenAPI validation continues to pass.
-- Limitation: no authorized Google OAuth credentials or second external account
-  were available, so real provider verification remains incomplete.
+- Limitation: external authentication and hosted account verification are outside
+  the final project scope.
 
-Scope update: the user explicitly deferred authentication from this project
-milestone. OAuth setup and private hosted workspaces are now release follow-up
-work rather than a blocker for the local API milestone.
+Scope update: the user removed external authentication from the project design.
+Only the explicit local session boundary remains in scope.
 
-Engineering verification for the revised local scope: six backend tests, OpenAPI validation, code
-compilation, and Uvicorn startup smoke passed. OAuth remains deferred.
+Engineering verification for the revised local scope: backend tests, OpenAPI
+validation, code compilation, and Uvicorn startup smoke passed. External
+authentication is excluded.
 
 ## Issue #5 — real API client
 
@@ -68,8 +76,9 @@ compilation, and Uvicorn startup smoke passed. OAuth remains deferred.
   (1), backend tests (6), and OpenAPI validation all pass.
 - Independent QA: pending.
 
-Engineering verification for the revised local scope: mock, Chromium, real-client integration,
-backend, and OpenAPI checks all pass; OAuth remains deferred.
+Engineering verification for the revised local scope: mock, Chromium, real-client
+integration, backend, and OpenAPI checks all pass; external authentication is
+excluded.
 
 ## Issue #6 — SQLite persistence
 
@@ -91,7 +100,7 @@ backend, and OpenAPI checks all pass; OAuth remains deferred.
   local data affecting repeatability.
 - Validation: `npm ci`, `uv sync`, backend 7 tests, frontend 4 tests, Chromium
   2 tests, API integration 1 test, and OpenAPI validation pass.
-- Limitations: hosted Google OAuth, physical/public-device evidence, other
+- Limitations: physical/public-device evidence, other
   browsers, and the full 20-by-200 visual scale run remain release follow-ups.
 
 ## Independent QA backfill

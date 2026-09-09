@@ -8,7 +8,7 @@ Grooming: criteria defined. Contract implementation is complete locally.
 
 - Root `openapi.yaml` defines authentication, board, task, status, and search operations.
 - `docs/openapi-service-mapping.md` maps every mock service method to an operation.
-- `npm run validate:openapi` passes with 18 operations.
+- `npm run validate:openapi` passes with 17 operations.
 - Storage, backend, credentials, and deployment remain out of scope.
 - Independent QA PASS: validator and contract assertions passed on 2026-09-09.
 - Commit and GitHub synchronization remain pending.
@@ -21,8 +21,8 @@ and error mappings are present. The formal QA report is recorded on this issue.
 
 ## Engineering verification (not QA)
 
-- [x] Root OpenAPI parses and validates — PASS: `npm run validate:openapi` reports 18 operations.
-- [x] Operation coverage and mapping — PASS: all 18 expected service operations match `docs/openapi-service-mapping.md`.
+- [x] Root OpenAPI parses and validates — PASS: `npm run validate:openapi` reports 17 operations.
+- [x] Operation coverage and mapping — PASS: all 17 expected service operations match `docs/openapi-service-mapping.md`.
 - [x] Security and ownership boundaries — PASS: protected operations require the session cookie; unavailable responses cover missing and foreign resources.
 - [x] Validation, statuses, ordering, search, and conflicts — PASS: schemas and descriptions include the fixed status enum, field limits, ordering, archived metadata, version preconditions, and `409` latest-content responses.
 - [x] Contract quality checks — PASS: `git diff --check`.
@@ -37,7 +37,7 @@ Specify the contract for every frontend service operation before building the ba
 
 ## Acceptance criteria
 
-- [ ] Create valid root openapi.yaml covering Google entry/callback and current-session/sign-out behavior, board list/create/read/rename/open-recency/archive/restore, task list/read/create/update/status/delete, and global task search.
+- [ ] Create valid root openapi.yaml covering the local development session and current-session/sign-out behavior, board list/create/read/rename/open-recency/archive/restore, task list/read/create/update/status/delete, and global task search.
 - [ ] Each operation defines method/path, inputs, required/optional fields, validation, success status/body, expected error status/body, and authentication. Define task IDs, statuses, creation ordering, archive labels, and search result metadata.
 - [ ] Specify ownership enforcement and non-disclosing behavior for foreign or missing resources. Clients cannot transfer ownership or move tasks across boards. Archived-board operations remain permitted.
 - [ ] Specify version/precondition behavior for stale edits and moves, the conflict response and latest-content retrieval, and deletion handling so a stale draft cannot resurrect a deleted task.

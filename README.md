@@ -1,8 +1,8 @@
 # TidyBoard
 
 TidyBoard is a desktop-first kanban workspace with a dependency-light frontend,
-FastAPI backend, and local SQLite persistence. Google authentication and hosted
-cross-device privacy are release follow-up work; local development uses an
+FastAPI backend, and local SQLite persistence. External authentication and
+hosted cross-device access are outside this project; local development uses an
 explicit mock identity.
 
 ## Run
@@ -43,8 +43,8 @@ uv run uvicorn app.main:app --reload
 uv run python -m unittest discover -s tests -v
 ```
 
-Google OAuth configuration names are documented in `backend/README.md`; without
-credentials, the OAuth endpoints fail safely and do not create a session.
+No external authentication credentials or provider setup are required. The
+development session endpoint is explicitly local-only.
 
 ## Configuration
 

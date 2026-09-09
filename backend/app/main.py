@@ -13,7 +13,6 @@ from fastapi import Cookie, Depends, FastAPI, Header, HTTPException, Query, Requ
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
-from fastapi.responses import RedirectResponse
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 SESSION_COOKIE = "tidyboard_session"
@@ -141,7 +140,7 @@ class Store:
                 tasks = [{**task, "created_at": task["created_at"].isoformat()} for task in board["tasks"]]
                 db.execute("INSERT INTO boards VALUES (?, ?, ?, ?, ?, ?)", (board["id"], board["owner"], board["name"], int(board["archived"]), board["opened_at"].isoformat(), json.dumps(tasks)))
 
-    def create_session(self, subject: str, name: str = "Google user", email: str = "user@example.test") -> tuple[str, str]:
+    def create_session(self, subject: str, name: str = "Local user", email: str = "user@example.test") -> tuple[str, str]:
         token, csrf = secrets.token_urlsafe(32), secrets.token_urlsafe(24)
         self.sessions[token] = {"subject": subject, "session": Session(name=name, email=email), "csrf": csrf, "expires_at": now() + timedelta(hours=1)}
         return token, csrf
@@ -216,20 +215,6 @@ def task_view(task: dict) -> Task:
 
 def error_conflict(task: dict) -> HTTPException:
     return HTTPException(status.HTTP_409_CONFLICT, detail={"code": "conflict", "message": "This task changed. Review the latest saved version.", "latest": task_view(task).model_dump(mode="json", by_alias=True)})
-
-
-@app.get("/auth/google/login", response_class=RedirectResponse, status_code=302)
-def google_login() -> RedirectResponse:
-    if not os.getenv("GOOGLE_CLIENT_ID") or not os.getenv("GOOGLE_REDIRECT_URI"):
-        raise HTTPException(status.HTTP_503_SERVICE_UNAVAILABLE, detail={"code": "oauth_unconfigured", "message": "Google sign-in is not configured."})
-    return RedirectResponse("https://accounts.google.com/o/oauth2/v2/auth", status_code=302)
-
-
-@app.get("/auth/google/callback")
-def google_callback(code: str = Query(...), state: str = Query(...)) -> RedirectResponse:
-    if not code or not state or not os.getenv("GOOGLE_CLIENT_ID") or not os.getenv("GOOGLE_CLIENT_SECRET"):
-        raise HTTPException(status.HTTP_400_BAD_REQUEST, detail={"code": "validation", "message": "Invalid sign-in callback."})
-    raise HTTPException(status.HTTP_400_BAD_REQUEST, detail={"code": "oauth_unavailable", "message": "Google token exchange is not configured."})
 
 
 @app.get("/session", response_model=Session)

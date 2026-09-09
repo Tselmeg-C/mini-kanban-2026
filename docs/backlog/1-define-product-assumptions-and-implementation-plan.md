@@ -17,9 +17,9 @@ None.
 
 - [ ] Review every item under project-spec.md's Assumptions for review and record its disposition. Keep material choices requiring user input explicitly unresolved until reviewed; do not present assumptions as approved.
 - [ ] Record concrete validation limits, duplicate-name behavior, creation-time ordering/tie handling, board-recency behavior, search matching/results order, and supported desktop browsers, with a checkable expected result for each.
-- [ ] Write an implementation plan outside the product-only spec covering frontend service boundaries, Google sign-in/session handling, ownership, temporary storage then SQLite, automatic refresh, stale-write detection, and draft preservation.
+- [ ] Write an implementation plan outside the product-only spec covering frontend service boundaries, local session handling, ownership, temporary storage then SQLite, automatic refresh, stale-write detection, and draft preservation.
 - [ ] Reconcile instruction.md with the later agreed product: project-spec.md is the product document; local development uses SQLite, while public cross-device availability is separately tracked release work. Preserve frontend-first, OpenAPI, tests, and AI reporting deliverables.
-- [ ] Map all 16 product acceptance criteria to implementation and verification issues. Identify credential/setup prerequisites by name only, and distinguish local checks from real Google sign-in and physical cross-device evidence.
+- [ ] Map all 16 product acceptance criteria to implementation and verification issues. Identify setup prerequisites by name only, and distinguish local checks from physical cross-device evidence.
 - [ ] Document dependencies and phase exit checks. No downstream implementation starts while a material product/security decision needed by it remains unresolved.
 
 ## Out of scope

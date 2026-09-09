@@ -9,7 +9,7 @@ before(async () => { server = spawn('python3', ['-m', 'http.server', '4173'], { 
 after(async () => { await browser?.close(); server?.kill(); });
 
 test('core mock journey works in Chromium', { concurrency: false }, async () => {
-  await page.getByRole('button', { name: /Continue with Google/ }).click(); await page.getByRole('button', { name: 'Personal' }).click();
+  await page.getByRole('button', { name: /Continue with local session/ }).click(); await page.getByRole('button', { name: 'Personal' }).click();
   await page.getByLabel('Task title').fill('Browser QA task'); await page.getByRole('button', { name: 'Create in To Do' }).click(); await waitFor(() => page.getByText('Browser QA task').count().then(Boolean));
   await page.locator('.task-open[data-task="t4"]').click(); assert.equal(await page.locator('#panel').evaluate(element => element.open), true); await page.getByLabel('Title', { exact: true }).fill('Browser QA edited'); await page.getByRole('button', { name: 'Save' }).click(); await waitFor(() => page.getByText('Browser QA edited').count().then(Boolean));
   await page.getByLabel('Search tasks').fill('edited'); await page.getByRole('button', { name: 'Search' }).click(); await waitFor(() => page.getByText(/Browser QA edited — Personal/).count().then(Boolean));

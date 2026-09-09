@@ -8,9 +8,8 @@ claiming production readiness.
 
 - Public HTTPS frontend and API with secure headers, a configured production
   origin, and no credentialed wildcard CORS.
-- Google OAuth authorization-code flow with registered HTTPS redirect URI,
-  state/nonce/PKCE validation, issuer/audience/expiry checks, secure session
-  cookies, logout/expiry invalidation, and CSRF protection for mutations.
+- If a future public release is considered, it needs a separately approved
+  authentication design; this project does not define or implement one.
 - Durable production storage that preserves owner identity, boards, tasks,
   versions, archive state, and recency across service restarts.
 - Backups, restore rehearsal, retention/deletion policy, migration rollback, and
@@ -22,10 +21,8 @@ claiming production readiness.
 
 The following remain unresolved and no provider is selected here: hosting
 provider and region, monthly budget, production database technology, backup
-retention and deletion window, domain/DNS ownership, Google consent-screen and
-test-user settings, incident ownership, and whether the local SQLite data is
-migrated or treated as development-only. Credentials and OAuth changes require
-explicit authorization.
+retention and deletion window, domain/DNS ownership, incident ownership, and
+whether the local SQLite data is migrated or treated as development-only.
 
 ## Follow-up work
 
@@ -36,13 +33,13 @@ explicit authorization.
 
 ## Required deployed evidence
 
-QA must use the same Google account on two actual devices, create and edit work,
-observe updates within about five seconds, verify a second account cannot access
-it, exercise stale conflicts and remote deletion, simulate connection failure
-and retry, restart the service, and confirm the same work remains. Record exact
-URLs, browser/device versions, elapsed observations, rollback/restore result,
-and any failed or skipped checks. Local mock sessions and local SQLite do not
-substitute for this evidence.
+Any future deployed QA must use an explicitly approved authentication design on
+two actual devices. It must create and edit work, observe updates within about
+five seconds, exercise stale conflicts and remote deletion, simulate connection
+failure and retry, restart the service, and confirm the same work remains.
+Record exact URLs, browser/device versions, elapsed observations,
+rollback/restore result, and failed or skipped checks. Local mock sessions and
+local SQLite do not substitute for this evidence.
 
 ## Rollback boundary
 

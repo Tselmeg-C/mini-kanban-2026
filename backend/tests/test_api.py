@@ -25,11 +25,8 @@ class ApiTests(unittest.TestCase):
         self.client.cookies.set(CSRF_COOKIE, csrf)
         self.client.headers.update({"X-CSRF-Token": csrf})
 
-    def test_auth_required_and_callback_rejected_without_credentials(self):
+    def test_auth_required_without_local_session(self):
         self.assertEqual(self.client.get('/boards').status_code, 401)
-        response = self.client.get('/auth/google/callback?code=x&state=y')
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.json()['code'], 'validation')
 
     def test_expired_session_has_no_workspace_access(self):
         self.login('expired')

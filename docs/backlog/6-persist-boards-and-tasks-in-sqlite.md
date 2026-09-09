@@ -61,7 +61,7 @@ Run SQLite-backed tests and a real restart-persistence check with a disposable d
 
 Tests: `uv run python -m unittest discover -s tests -v` — 8 passed.
 Tests: `npm test` — 4 passed.
-Tests: `npm run validate:openapi` — 18 operations valid.
+Tests: `npm run validate:openapi` — 17 operations valid.
 Focused disposable restart/all-fields/ownership/search/archive check — passed.
 QA did not modify implementation or tests.
 

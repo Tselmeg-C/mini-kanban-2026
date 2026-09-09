@@ -10,37 +10,30 @@ info:
 servers:
   - url: http://localhost:8000
 tags:
-  - name: authentication
+  - name: session
   - name: boards
   - name: tasks
   - name: search
 paths:
-  /auth/google/login:
-    get:
-      tags: [authentication]
-      summary: Start Google sign-in
+  /dev/session:
+    post:
+      tags: [session]
+      summary: Create the local development session
+      description: Enabled only when AUTH_DISABLED=1; external authentication is outside this project.
       security: []
       responses:
-        '302': {description: Redirect to Google authorization.}
-  /auth/google/callback:
-    get:
-      tags: [authentication]
-      summary: Complete Google sign-in
-      security: []
-      parameters: [{ $ref: '#/components/parameters/OAuthCode' }, { $ref: '#/components/parameters/OAuthState' }]
-      responses:
-        '302': {description: Redirect after setting the session cookie.}
-        '400': {$ref: '#/components/responses/InvalidRequest'}
+        '200': {description: Local session created., content: {application/json: {schema: {$ref: '#/components/schemas/Session'}}}}
+        '404': {description: Local development sessions are disabled.}
   /session:
     get:
-      tags: [authentication]
+      tags: [session]
       summary: Read the current session
       security: [{sessionCookie: []}]
       responses:
         '200': {description: Signed-in session., content: {application/json: {schema: {$ref: '#/components/schemas/Session'}}}}
         '401': {$ref: '#/components/responses/Unauthenticated'}
     delete:
-      tags: [authentication]
+      tags: [session]
       summary: Sign out and invalidate the session
       security: [{sessionCookie: []}]
       responses:
@@ -204,8 +197,6 @@ components:
     IncludeArchived: {name: includeArchived, in: query, required: false, schema: {type: boolean, default: true}}
     Page: {name: page, in: query, required: false, schema: {type: integer, minimum: 1, default: 1}}
     PageSize: {name: pageSize, in: query, required: false, schema: {type: integer, minimum: 1, maximum: 100, default: 50}}
-    OAuthCode: {name: code, in: query, required: true, schema: {type: string}}
-    OAuthState: {name: state, in: query, required: true, schema: {type: string}}
   schemas:
     Session: {type: object, required: [name, email], properties: {name: {type: string}, email: {type: string, format: email}}}
     BoardInput: {type: object, required: [name], additionalProperties: false, properties: {name: {type: string, minLength: 1, maxLength: 120}}}
@@ -220,7 +211,6 @@ components:
     Error: {type: object, required: [code, message], properties: {code: {type: string}, message: {type: string}, requestId: {type: string}}}
     Conflict: {type: object, required: [code, message, latest], properties: {code: {type: string, enum: [conflict]}, message: {type: string}, latest: {$ref: '#/components/schemas/Task'}}}
   responses:
-    InvalidRequest: {description: Invalid OAuth callback or request., content: {application/json: {schema: {$ref: '#/components/schemas/Error'}, examples: {invalid: {value: {code: validation, message: Invalid sign-in callback.}}}}}}
     Validation: {description: Invalid input or status., content: {application/json: {schema: {$ref: '#/components/schemas/Error'}, examples: {invalid: {value: {code: validation, message: Task title must be 1-120 characters.}}}}}}
     Unauthenticated: {description: No valid session; no workspace data is disclosed., content: {application/json: {schema: {$ref: '#/components/schemas/Error'}, examples: {unauthenticated: {value: {code: unauthenticated, message: Sign in required.}}}}}}
     Unavailable: {description: 'Missing or foreign resource; the same response prevents ownership disclosure.', content: {application/json: {schema: {$ref: '#/components/schemas/Error'}, examples: {unavailable: {value: {code: unavailable, message: Resource is unavailable.}}}}}}
