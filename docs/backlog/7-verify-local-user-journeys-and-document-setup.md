@@ -1,6 +1,6 @@
 # Verify local user journeys and document setup
 
-Status: DONE (local QA PASS; release gaps documented; GitHub sync pending)
+Status: DONE (QA PASS; release gaps documented; GitHub issue closed)
 GitHub issue: [#7](https://github.com/Tselmeg-C/mini-kanban-2026/issues/7)
 Grooming: criteria defined; local verification and setup documentation complete.
 
