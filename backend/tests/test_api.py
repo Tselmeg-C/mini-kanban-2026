@@ -1,5 +1,7 @@
 import unittest
 from datetime import timedelta
+import os
+import tempfile
 
 from fastapi.testclient import TestClient
 
@@ -8,8 +10,13 @@ from app.main import CSRF_COOKIE, SESSION_COOKIE, app, now, store
 
 class ApiTests(unittest.TestCase):
     def setUp(self):
-        store.boards.clear(); store.sessions.clear(); store.next_board = 1; store.next_task = 1
+        self.db = tempfile.NamedTemporaryFile(suffix='.sqlite3', delete=False)
+        self.db.close()
+        store.configure(self.db.name); store.sessions.clear()
         self.client = TestClient(app)
+
+    def tearDown(self):
+        store.close(); os.unlink(self.db.name)
 
     def login(self, subject):
         token, csrf = store.create_session(subject, subject, f"{subject}@example.test")
@@ -63,6 +70,16 @@ class ApiTests(unittest.TestCase):
         self.login('alice')
         self.assertEqual(self.client.post('/boards', json={'name': '   '}).status_code, 400)
         self.assertEqual(self.client.post('/boards', json={'name': 'No CSRF'}, headers={'X-CSRF-Token': 'wrong'}).status_code, 403)
+
+    def test_boards_and_tasks_survive_store_restart(self):
+        self.login('alice')
+        board = self.client.post('/boards', json={'name': 'Saved'}).json()
+        task = self.client.post(f"/boards/{board['id']}/tasks", json={'title': 'Remember me'}).json()
+        store.configure(self.db.name)
+        self.client.cookies.clear(); self.client.headers.pop('X-CSRF-Token', None); self.login('alice')
+        loaded = self.client.get(f"/boards/{board['id']}").json()
+        self.assertEqual(loaded['name'], 'Saved')
+        self.assertEqual(loaded['tasks'][0]['id'], task['id'])
 
 
 if __name__ == '__main__':

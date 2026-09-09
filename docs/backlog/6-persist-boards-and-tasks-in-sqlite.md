@@ -1,12 +1,14 @@
 # Persist boards and tasks in SQLite
 
-Status: TODO
+Status: DONE (local QA PASS; GitHub sync pending)
 GitHub issue: [#6](https://github.com/Tselmeg-C/mini-kanban-2026/issues/6)
-Grooming: criteria defined; implementation has not started.
+Grooming: criteria defined; implementation complete and verified locally.
 
 ## Goal
 
-Make user work durable without changing frontend or API behavior.
+Make user work durable without changing frontend or API behavior. Session state
+remains in memory because local development authentication is intentionally
+disabled.
 
 ## Dependencies
 
@@ -14,12 +16,12 @@ Make user work durable without changing frontend or API behavior.
 
 ## Acceptance criteria
 
-- [ ] Replace the temporary store with SQLite while preserving the OpenAPI contract and frontend service behavior. Persist user ownership, boards/recency/archive state, tasks/status/creation order, and mutation versions.
-- [ ] Provide environment-driven database configuration with a safe local default and repeatable schema setup or migrations. Rerunning setup preserves existing data; seed data is explicit.
-- [ ] Create boards/tasks, edit/move/archive them, restart the backend with the same database, sign in again, and verify all saved fields, ownership, search results, and archive state remain.
-- [ ] Run the existing lifecycle/contract/isolation tests against isolated SQLite data, including invalid input, missing tasks, archived-board edits, and two-account access attempts.
-- [ ] Test competing writes so only the matching version succeeds; stale mutation is rejected atomically. A failed write leaves confirmed data intact and deleted tasks are not resurrected.
-- [ ] Keep local database files and test artifacts untracked. Document storage setup and portability boundaries; switching to future production storage must not require a product/domain redesign.
+- [x] Replace the temporary store with SQLite while preserving the OpenAPI contract and frontend service behavior. Persist user ownership, boards/recency/archive state, tasks/status/creation order, and mutation versions.
+- [x] Provide environment-driven database configuration with a safe local default and repeatable schema setup or migrations. Rerunning setup preserves existing data; seed data is explicit.
+- [x] Create boards/tasks, edit/move/archive them, restart the backend with the same database, sign in again, and verify all saved fields, ownership, search results, and archive state remain.
+- [x] Run the existing lifecycle/contract/isolation tests against isolated SQLite data, including invalid input, missing tasks, archived-board edits, and two-account access attempts.
+- [x] Test competing writes so only the matching version succeeds; stale mutation is rejected atomically. A failed write leaves confirmed data intact and deleted tasks are not resurrected.
+- [x] Keep local database files and test artifacts untracked. Document storage setup and portability boundaries; switching to future production storage must not require a product/domain redesign.
 
 ## Out of scope
 
@@ -34,7 +36,7 @@ Make user work durable without changing frontend or API behavior.
 
 ## Verification
 
-Run SQLite-backed tests and a real restart-persistence check with a disposable database; record setup repeatability and concurrency results.
+Run SQLite-backed tests and a real restart-persistence check with a disposable database; record setup repeatability and concurrency results. PASS: 7 backend tests, including restart persistence and stale-write/delete checks.
 
 ## References
 

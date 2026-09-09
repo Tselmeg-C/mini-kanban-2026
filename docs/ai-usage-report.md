@@ -70,3 +70,14 @@ compilation, and Uvicorn startup smoke passed. OAuth remains deferred.
 
 QA PASS for the revised local scope: mock, Chromium, real-client integration,
 backend, and OpenAPI checks all pass; OAuth remains deferred.
+
+## Issue #6 — SQLite persistence
+
+- Work: replaced the process-local board/task store with a stdlib SQLite store,
+  added `DATABASE_PATH` configuration and repeatable schema setup, persisted all
+  board/task mutations, and isolated tests with disposable databases.
+- Validation: 7 backend tests (including restart persistence and stale-write /
+  delete checks), mock tests (4), Chromium tests (2), real-client integration
+  (1), and OpenAPI validation pass.
+- Limitation: sessions remain in memory because authentication is intentionally
+  deferred for this local milestone.

@@ -1,9 +1,10 @@
 from __future__ import annotations
 
-import hashlib
 import hmac
+import json
 import os
 import secrets
+import sqlite3
 from datetime import datetime, timedelta, timezone
 from typing import Annotated
 
@@ -92,11 +93,51 @@ class SearchResult(Task):
 
 
 class Store:
-    def __init__(self) -> None:
+    def __init__(self, db_path: str | None = None) -> None:
+        self.db_path = db_path or os.getenv("DATABASE_PATH", os.path.join(os.path.dirname(os.path.dirname(__file__)), "tidyboard.sqlite3"))
+        self._connection: sqlite3.Connection | None = None
         self.boards: dict[str, dict] = {}
         self.sessions: dict[str, dict] = {}
         self.next_board = 1
         self.next_task = 1
+        self._setup(); self._load()
+
+    def _db(self) -> sqlite3.Connection:
+        if self._connection is None:
+            self._connection = sqlite3.connect(self.db_path, check_same_thread=False)
+            self._connection.row_factory = sqlite3.Row
+        return self._connection
+
+    def _setup(self) -> None:
+        self._db().execute("CREATE TABLE IF NOT EXISTS boards (id TEXT PRIMARY KEY, owner TEXT NOT NULL, name TEXT NOT NULL, archived INTEGER NOT NULL, opened_at TEXT NOT NULL, tasks_json TEXT NOT NULL)")
+        self._db().commit()
+
+    def _load(self) -> None:
+        self.boards = {}
+        for row in self._db().execute("SELECT id, owner, name, archived, opened_at, tasks_json FROM boards"):
+            tasks = json.loads(row["tasks_json"])
+            for task in tasks: task["created_at"] = datetime.fromisoformat(task["created_at"])
+            self.boards[row["id"]] = {"id": row["id"], "owner": row["owner"], "name": row["name"], "archived": bool(row["archived"]), "opened_at": datetime.fromisoformat(row["opened_at"]), "tasks": tasks}
+        board_ids = [int(value[1:]) for value in self.boards if value[1:].isdigit()]
+        task_ids = [int(task["id"][1:]) for board in self.boards.values() for task in board["tasks"] if task["id"][1:].isdigit()]
+        self.next_board = max(board_ids, default=0) + 1; self.next_task = max(task_ids, default=0) + 1
+
+    def configure(self, db_path: str) -> None:
+        if self._connection: self._connection.close()
+        self.db_path = db_path; self._connection = None; self._setup(); self._load()
+
+    def close(self) -> None:
+        if self._connection:
+            self._connection.close(); self._connection = None
+
+    def persist(self) -> None:
+        db = self._db()
+        # ponytail: snapshot replacement keeps the store small; row-level writes if throughput matters.
+        with db:
+            db.execute("DELETE FROM boards")
+            for board in self.boards.values():
+                tasks = [{**task, "created_at": task["created_at"].isoformat()} for task in board["tasks"]]
+                db.execute("INSERT INTO boards VALUES (?, ?, ?, ?, ?, ?)", (board["id"], board["owner"], board["name"], int(board["archived"]), board["opened_at"].isoformat(), json.dumps(tasks)))
 
     def create_session(self, subject: str, name: str = "Google user", email: str = "user@example.test") -> tuple[str, str]:
         token, csrf = secrets.token_urlsafe(32), secrets.token_urlsafe(24)
@@ -211,6 +252,7 @@ def list_boards(session: SessionDep, include_archived: Annotated[bool, Query(ali
 def create_board(body: BoardInput, session: CsrfDep) -> Board:
     board = {"id": f"b{store.next_board}", "owner": session["subject"], "name": body.name, "archived": False, "opened_at": now(), "tasks": []}
     store.next_board += 1; store.boards[board["id"]] = board
+    store.persist()
     return board_view(board)
 
 
@@ -220,16 +262,16 @@ def get_board(board_id: str, session: SessionDep) -> Board: return board_view(st
 
 @app.patch("/boards/{board_id}", response_model=Board)
 def rename_board(board_id: str, body: BoardInput, session: CsrfDep) -> Board:
-    board = store.board(session["subject"], board_id); board["name"] = body.name; return board_view(board)
+    board = store.board(session["subject"], board_id); board["name"] = body.name; store.persist(); return board_view(board)
 
 
 def mutate_board(board_id: str, session: CsrfDep, archived: bool) -> Board:
-    board = store.board(session["subject"], board_id); board["archived"] = archived; board["opened_at"] = now() if not archived else board["opened_at"]; return board_view(board)
+    board = store.board(session["subject"], board_id); board["archived"] = archived; board["opened_at"] = now() if not archived else board["opened_at"]; store.persist(); return board_view(board)
 
 
 @app.post("/boards/{board_id}/open", response_model=Board)
 def open_board(board_id: str, session: CsrfDep) -> Board:
-    board = store.board(session["subject"], board_id); board["opened_at"] = now(); return board_view(board)
+    board = store.board(session["subject"], board_id); board["opened_at"] = now(); store.persist(); return board_view(board)
 
 
 @app.post("/boards/{board_id}/archive", response_model=Board)
@@ -248,7 +290,7 @@ def list_tasks(board_id: str, session: SessionDep) -> list[Task]: return [task_v
 def create_task(board_id: str, body: TaskCreate, session: CsrfDep) -> Task:
     board = store.board(session["subject"], board_id)
     task = {"id": f"t{store.next_task}", "title": body.title, "description": body.description, "status": "todo", "created_at": now(), "version": 1}
-    store.next_task += 1; board["tasks"].append(task); return task_view(task)
+    store.next_task += 1; board["tasks"].append(task); store.persist(); return task_view(task)
 
 
 @app.get("/boards/{board_id}/tasks/{task_id}", response_model=Task)
@@ -266,17 +308,17 @@ def check_status(value: str) -> str:
 
 @app.patch("/boards/{board_id}/tasks/{task_id}", response_model=Task)
 def update_task(board_id: str, task_id: str, body: TaskUpdate, session: CsrfDep) -> Task:
-    _, task = store.task(session["subject"], board_id, task_id); check_version(task, body.version); task.update(title=body.title, description=body.description, status=check_status(body.status), version=task["version"] + 1); return task_view(task)
+    _, task = store.task(session["subject"], board_id, task_id); check_version(task, body.version); task.update(title=body.title, description=body.description, status=check_status(body.status), version=task["version"] + 1); store.persist(); return task_view(task)
 
 
 @app.delete("/boards/{board_id}/tasks/{task_id}", status_code=204)
 def delete_task(board_id: str, task_id: str, version: Annotated[int, Query(ge=1)], session: CsrfDep) -> None:
-    board, task = store.task(session["subject"], board_id, task_id); check_version(task, version); board["tasks"].remove(task)
+    board, task = store.task(session["subject"], board_id, task_id); check_version(task, version); board["tasks"].remove(task); store.persist()
 
 
 @app.patch("/boards/{board_id}/tasks/{task_id}/status", response_model=Task)
 def move_task(board_id: str, task_id: str, body: StatusUpdate, session: CsrfDep) -> Task:
-    _, task = store.task(session["subject"], board_id, task_id); check_version(task, body.version); task.update(status=check_status(body.status), version=task["version"] + 1); return task_view(task)
+    _, task = store.task(session["subject"], board_id, task_id); check_version(task, body.version); task.update(status=check_status(body.status), version=task["version"] + 1); store.persist(); return task_view(task)
 
 
 @app.get("/search/tasks", response_model=list[SearchResult])
