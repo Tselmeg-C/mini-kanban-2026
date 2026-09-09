@@ -6,15 +6,17 @@ TidyBoard helps individuals organize personal work across multiple projects.
 Each project has its own board. The first release is a desktop-first, online
 tool that people can access across devices using their Google account.
 
-Anyone with a Google account may sign in, but each person's boards and tasks
-are private. This is a personal workspace, with no shared boards or team roles.
+The eventual hosted release may use Google sign-in, but authentication is
+deferred from this local project milestone. Local work uses a development-only
+mock identity and makes no privacy or account-isolation claim.
 
 This document defines product behavior only. The decisions below were agreed
 during scope discussions; remaining minor assumptions are identified separately.
 
 ## First-release scope
 
-- Google sign-in and a private workspace for each person.
+- Development-only mock sign-in for local workflows. Google sign-in and private
+  hosted workspaces are deferred release work.
 - Multiple named boards, ordered by most recently opened.
 - Three fixed columns on every board: To Do, In Progress, and Done.
 - Tasks with a required title and optional description.
@@ -151,9 +153,9 @@ first release. Tasks cannot be moved between boards.
 
 ## Acceptance criteria
 
-1. A new person can sign in with Google, create two boards, and maintain separate
-   task lists on them. Another signed-in person cannot access either board or
-   its tasks, through browsing, search, direct links, or attempted changes.
+1. A local user can enter through the mock sign-in, create two boards, and
+   maintain separate task lists on them. Google authentication and cross-account
+   privacy are deferred to release work and are not accepted by this milestone.
 2. Opening a board puts it first in the recently opened active-board list.
    Renaming a board preserves its tasks.
 3. Every board has exactly To Do, In Progress, and Done; users cannot add,
@@ -224,4 +226,4 @@ These minor defaults were not explicitly selected during brainstorming:
   draft recovery after browser closure.
 - Instant live collaboration; the agreed update interval is about five seconds.
 - Native mobile apps and a polished mobile-first experience.
-- Login methods other than Google, imports, exports, and third-party integrations.
+- Google authentication, other login methods, imports, exports, and third-party integrations.

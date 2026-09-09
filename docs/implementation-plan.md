@@ -25,6 +25,8 @@ requires a material new product/security decision before mock UI work.
 | Refresh/conflicts | Retained default: refresh never replaces a draft. Review displays latest content alongside draft; explicit reapplication uses the reviewed version, which can conflict again. | Edit in two sessions: stale save preserves both views; another intervening save causes another conflict. Remote deletion preserves copyable text and disables save. |
 | Browsers | Retained default: current stable desktop Chrome, Firefox, Edge, Safari at verification time. Record exact tested versions in #7. Narrow screens retain core access; polished mobile layout and mobile drag are deferred. | Run core keyboard journeys in each browser; narrow-screen content/actions remain reachable using the status selector. Missing browser evidence is pending, never inferred. |
 
+Authentication is deferred from this local milestone by explicit user decision.
+The mock identity remains for frontend workflows and makes no security claim.
 Material release choices remain **unresolved for user review in #8**: public
 origin, hosting provider/cost, production storage, backup/retention/recovery, and
 production Google OAuth configuration. These block release implementation, not
